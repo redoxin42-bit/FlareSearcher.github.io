@@ -105,10 +105,9 @@
     </div>
 
     <script>
-        // Инициализация векторных SVG иконок Lucide
+        // Рендерим векторные иконки
         lucide.createIcons();
 
-        // Получение DOM элементов
         const authScreen = document.getElementById('authScreen');
         const mainScreen = document.getElementById('mainScreen');
         const tokenField = document.getElementById('tokenField');
@@ -118,12 +117,10 @@
         const toastBox = document.getElementById('toastBox');
         const toastText = document.getElementById('toastText');
 
-        // Кастомная функция вывода красивых стеклянных уведомлений
         function showToast(text, type = 'error') {
             toastText.innerText = text;
             toastBox.className = `toast ${type} show`;
             
-            // Динамическое изменение иконки внутри уведомления
             const iconName = type === 'success' ? 'check-circle' : 'alert-circle';
             toastBox.innerHTML = `<i data-lucide="${iconName}" style="width: 18px; height: 18px;"></i> <span>${text}</span>`;
             lucide.createIcons();
@@ -133,7 +130,7 @@
             }, 3000);
         }
 
-        // Валидация токена и переход на главный экран
+        // Логика кнопки авторизации
         loginBtn.addEventListener('click', () => {
             const tokenValue = tokenField.value.trim();
 
@@ -142,13 +139,9 @@
                 return;
             }
 
-            // Имитация успешной проверки токена бота
             showToast('Авторизация успешна', 'success');
-            
-            // Установка базового демонстрационного баланса
             balanceCount.innerText = "150";
 
-            // Мягкая анимация скрытия авторизации и проявления Morph-панелей
             authScreen.classList.add('hidden');
             
             setTimeout(() => {
@@ -156,17 +149,16 @@
             }, 300);
         });
 
-        // Обработка кнопки покупки за Telegram Stars
+        // Симуляция оплаты Telegram Stars
         payBtn.addEventListener('click', () => {
             showToast('Запрос на оплату 50 Stars отправлен!', 'success');
             
-            // Симуляция ответа платежного шлюза
             setTimeout(() => {
                 const currentBalance = parseInt(balanceCount.innerText);
                 balanceCount.innerText = currentBalance + 5000;
                 showToast('Баланс успешно обновлен (+5000)!', 'success');
                 
-                // Плавный скролл-возврат к блоку баланса
+                // Возвращаем скролл наверх к балансу
                 document.getElementById('scrollViewport').scrollTo({
                     top: 0,
                     behavior: 'smooth'
