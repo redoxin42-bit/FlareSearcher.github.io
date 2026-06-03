@@ -8,60 +8,57 @@
 </head>
 <body>
 
-    <div class="space-wrapper">
-        <canvas id="space"></canvas>
-        <div class="planet planet-1"></div>
-        <div class="planet planet-2"></div>
+    <div class="space-container">
+        <canvas id="space-canvas"></canvas>
+        <div class="space-nebula"></div>
+        <div class="cosmic-body planet-main"></div>
+        <div class="cosmic-body planet-secondary"></div>
     </div>
 
-    <div id="loader" class="glass-modal">
-        <h2 id="load-title">Select Language / Выберите язык</h2>
-        <div class="lang-container">
-            <button class="lang-tile" onclick="setLang('en')">
-                <span class="lang-main">English</span>
-                <span class="lang-sub">Global</span>
-            </button>
-            <button class="lang-tile" onclick="setLang('ru')">
-                <span class="lang-main">Русский</span>
-                <span class="lang-sub">Регион</span>
-            </button>
+    <div id="language-preloader" class="modal-overlay">
+        <div class="glass-card black-glass lang-card">
+            <h2>Select Language / Выберите язык</h2>
+            <div class="lang-options">
+                <button class="btn-premium" onclick="selectLanguage('en')">English</button>
+                <button class="btn-premium" onclick="selectLanguage('ru')">Русский</button>
+            </div>
         </div>
     </div>
 
-    <nav class="nav-bar glass-panel">
+    <nav class="navbar black-glass">
         <div class="logo">FlareSpace</div>
-        <div class="nav-controls">
-            <span id="nav-settings">Settings</span>
-            <div class="theme-tab">
-                <div class="tab-slider"></div>
-                <button class="tab-btn active" onclick="switchTheme('dark', this)">Dark</button>
-                <button class="tab-btn" onclick="switchTheme('light', this)">Light</button>
+        <div class="nav-actions">
+            <span id="label-settings">Settings</span>
+            <div class="tab-switcher">
+                <div class="tab-indicator"></div>
+                <button class="tab-item active" onclick="setSpaceTheme('nebula', this)">Nebula</button>
+                <button class="tab-item" onclick="setSpaceTheme('eclipse', this)">Eclipse</button>
             </div>
         </div>
     </nav>
 
-    <main>
-        <section class="hero">
-            <h1 id="hero-text">FlareSpace - Various stars of space, similar to various FlareSpace projects.</h1>
-            <div class="scroll-indicator">
-                <div class="mouse-wheel"></div>
+    <main class="content">
+        <section class="hero-view">
+            <h1 id="hero-headline">FlareSpace - Various stars of space, similar to various FlareSpace projects.</h1>
+            <div class="animated-scroll-down">
+                <div class="scroll-dot"></div>
             </div>
         </section>
 
-        <section class="projects">
-            <div class="project-card glass-panel fade-in">
+        <section class="projects-grid">
+            <div class="project-node liquid-glass fade-trigger">
                 <h2>FlareVpn</h2>
-                <p id="vpn-desc">Fast and secure VPN adapter for ultimate privacy.</p>
-                <div class="links">
-                    <a href="https://github.com" target="_blank" id="vpn-gh">GitHub</a>
-                    <a href="https://t.me" target="_blank" id="vpn-tg">Telegram Channel</a>
+                <p id="desc-vpn">Fast and secure VPN adapter for ultimate privacy.</p>
+                <div class="action-links">
+                    <a href="https://github.com" target="_blank" id="link-github">GitHub</a>
+                    <a href="https://t.me" target="_blank" id="link-telegram">Telegram Channel</a>
                 </div>
             </div>
 
-            <div class="project-card glass-panel fade-in">
+            <div class="project-node liquid-glass fade-trigger">
                 <h2>FlareFind</h2>
-                <p id="find-desc">Advanced bot to search for rare and unique usernames.</p>
-                <div class="links">
+                <p id="desc-find">Advanced bot to search for rare and unique usernames.</p>
+                <div class="action-links">
                     <a href="https://t.me/FlareFind" target="_blank">@FlareFind</a>
                     <a href="https://t.me/FlareFindBot" target="_blank">@FlareFindBot</a>
                 </div>
