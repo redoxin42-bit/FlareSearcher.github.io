@@ -14,7 +14,7 @@
 
     <div id="lang-overlay">
         <div class="lang-panel">
-            <h2>SELECT LANGUAGE / ВЫБЕРИТЕ ЯЗЫК</h2>
+            <h2 data-key="lang-title">SELECT LANGUAGE</h2>
             <div class="lang-buttons">
                 <button class="lang-btn" onclick="selectLanguage('en')">English</button>
                 <button class="lang-btn" onclick="selectLanguage('ru')">Русский</button>
@@ -61,7 +61,7 @@
                     <p data-key="vpn-desc">A highly secure, fast, and completely anonymous premium VPN service designed to keep your connection protected and digital footprints clean.</p>
                 </div>
                 <div class="card-links">
-                    <a href="https://github.com" target="_blank" class="btn btn-git">
+                    <a href="https://github.com/gitwelk/FlareVpn" target="_blank" class="btn btn-git">
                         <i class="fa-brands fa-github"></i> <span data-key="repo-btn">Repository</span>
                     </a>
                     <a href="https://t.me/FlareApp" target="_blank" class="btn btn-tg">
@@ -88,11 +88,13 @@
         </div>
     </main>
 
+
     <script>
         // Словарь локализации (EN / RU)
         const translations = {
 
             en: {
+                "lang-title": "SELECT LANGUAGE",
                 "hero-subtitle": "Various stars of space, similar to various FlareSpace projects.",
                 "scroll-text": "Scroll Down",
                 "vpn-desc": "A highly secure, fast, and completely anonymous premium VPN service designed to keep your connection protected and digital footprints clean.",
@@ -106,6 +108,7 @@
 
 
             ru: {
+                "lang-title": "ВЫБЕРИТЕ ЯЗЫК",
                 "hero-subtitle": "Различные звезды космоса, подобные различным проектам FlareSpace.",
                 "scroll-text": "Листайте вниз",
                 "vpn-desc": "Высокоскоростной, безопасный и абсолютно анонимный VPN-сервис премиум-класса, созданный для надежной защиты вашего соединения.",
@@ -121,38 +124,39 @@
 
         // Логика выбора языка
         function selectLanguage(lang) {
-            document.querySelectorAll('[data-key]').forEach(element => {
-                const key = element.getAttribute('data-key');
+            document.querySelectorAll("[data-key]").forEach(element => {
+                const key = element.getAttribute("data-key");
                 if (translations[lang][key]) {
                     element.textContent = translations[lang][key];
                 }
             });
-            const overlay = document.getElementById('lang-overlay');
-            overlay.classList.add('hidden');
-            document.body.classList.remove('scroll-locked');
+            const overlay = document.getElementById("lang-overlay");
+            overlay.classList.add("hidden");
+            document.body.classList.remove("scroll-locked");
+            document.body.classList.add("selected");
         }
 
         // Переключение тем оформления (Темная / Светлая)
         function toggleTheme() {
             const body = document.body;
-            const icon = document.getElementById('theme-btn').querySelector('i');
-            body.classList.toggle('light-theme');
+            const icon = document.getElementById("theme-btn").querySelector("i");
+            body.classList.toggle("light-theme");
             
-            if(body.classList.contains('light-theme')) {
-                icon.className = 'fa-solid fa-sun';
+            if(body.classList.contains("light-theme")) {
+                icon.className = "fa-solid fa-sun";
             } else {
-                icon.className = 'fa-solid fa-moon';
+                icon.className = "fa-solid fa-moon";
             }
         }
 
         // Динамический скролл: исчезновение текста и проявление карточек
-        window.addEventListener('scroll', () => {
+        window.addEventListener("scroll", () => {
             const scrollPos = window.scrollY;
             const vh = window.innerHeight;
             
-            const heroText = document.getElementById('hero-text');
-            const scrollHint = document.getElementById('scroll-hint');
-            const projectsSection = document.getElementById('projects-section');
+            const heroText = document.getElementById("hero-text");
+            const scrollHint = document.getElementById("scroll-hint");
+            const projectsSection = document.getElementById("projects-section");
 
             // Рассчитываем прозрачность для контента Hero
             let fadeProgress = 1 - (scrollPos / (vh * 0.45));
@@ -164,9 +168,9 @@
 
             // Появление панелей с проектами при достижении порога скролла
             if (scrollPos > vh * 0.2) {
-                projectsSection.classList.add('visible');
+                projectsSection.classList.add("visible");
             } else {
-                projectsSection.classList.remove('visible');
+                projectsSection.classList.remove("visible");
             }
         });
 
@@ -176,6 +180,7 @@
         }
 
     </script>
+
 
     <div id="settings-modal" class="hidden">
         <div class="lang-panel">

@@ -2,34 +2,29 @@
    1. GLOBAL VARIABLES AND THEMES
    ========================================================================== */
 :root {
-    --bg-gradient: linear-gradient(135deg, #020205 0%, #05051a 50%, #010103 100%);
+    --bg-gradient: radial-gradient(circle at center, #0a0a2a 0%, #020205 100%);
     --text-primary: #ffffff;
-    --text-muted: rgba(255, 255, 255, 0.6);
+    --text-muted: rgba(255, 255, 255, 0.5);
     
-    /* Premium Liquidglass (Dark) - Bluer with strong highlights */
-    --glass-bg: linear-gradient(135deg, rgba(30, 50, 150, 0.3) 0%, rgba(10, 20, 80, 0.5) 100%);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --glass-blur: blur(30px);
-    --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
-                    inset 0 1px 1px rgba(255, 255, 255, 0.4),
-                    inset 0 -1px 1px rgba(0, 0, 0, 0.3);
+    /* Liquidglass - High Definition */
+    --glass-bg: rgba(15, 25, 75, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-blur: blur(35px);
+    --glass-shadow: 0 30px 60px rgba(0, 0, 0, 0.8),
+                    inset 0 1px 2px rgba(255, 255, 255, 0.3);
     
-    --accent-color: #3b82f6;
-    --planet-left: radial-gradient(circle at 30% 30%, #2563eb, #091e42, #000);
+    --accent-color: #4f46e5;
+    --planet-left: radial-gradient(circle at 30% 30%, #3b82f6, #061f4d, #000);
     --planet-right: radial-gradient(circle at 30% 30%, #6366f1, #1e1b4b, #000);
     --star-color: #ffffff;
 }
 
 .light-theme {
-    --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    --text-primary: #1e293b;
-    --text-muted: rgba(30, 41, 59, 0.7);
-    
-    --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(200, 220, 255, 0.4) 100%);
-    --glass-border: rgba(255, 255, 255, 0.5);
-    --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.05),
-                    inset 0 1px 1px rgba(255, 255, 255, 0.8);
-    
+    --bg-gradient: radial-gradient(circle at center, #f8fafc 0%, #cbd5e1 100%);
+    --text-primary: #0f172a;
+    --text-muted: rgba(15, 23, 42, 0.7);
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(15, 23, 42, 0.1);
     --accent-color: #2563eb;
 }
 
@@ -41,10 +36,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
-    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
-                color 0.4s ease, 
-                border-color 0.4s ease, 
-                box-shadow 0.4s ease;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
@@ -54,275 +46,177 @@ body {
     min-height: 200vh;
 }
 
-body.scroll-locked {
-    overflow: hidden;
-}
+body.scroll-locked { overflow: hidden; }
 
 /* ==========================================================================
-   3. LANGUAGE OVERLAY (Landing)
+   3. BEAUTIFUL DARK LANGUAGE SELECTION
    ========================================================================== */
 #lang-overlay {
     position: fixed;
     inset: 0;
-    background: #010103;
+    background: #020206;
     z-index: 1000;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: opacity 0.8s ease, visibility 0.8s;
+    transition: opacity 1s ease-out, visibility 1s;
 }
 
-#lang-overlay.hidden {
-    opacity: 0;
-    visibility: hidden;
-}
+#lang-overlay.hidden { opacity: 0; visibility: hidden; }
 
 .lang-panel {
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--glass-border);
-    padding: 4rem;
-    border-radius: 32px;
-    box-shadow: var(--glass-shadow);
+    background: linear-gradient(135deg, rgba(15, 20, 40, 0.9), rgba(5, 5, 15, 0.95));
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 5rem 3rem;
+    border-radius: 40px;
+    box-shadow: 0 50px 100px rgba(0,0,0,0.9);
     text-align: center;
     width: min(500px, 90%);
 }
 
 .lang-panel h2 {
-    margin-bottom: 2rem;
-    font-weight: 300;
-    letter-spacing: 2px;
+    margin-bottom: 3rem;
+    font-weight: 200;
+    letter-spacing: 4px;
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.9);
 }
 
-.lang-buttons {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: center;
-}
+.lang-buttons { display: flex; gap: 2rem; justify-content: center; }
 
 .lang-btn {
-    padding: 1rem 2rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.05);
+    padding: 1.2rem 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
     color: #fff;
-    font-weight: 600;
-    border-radius: 16px;
+    font-weight: 700;
+    border-radius: 20px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.4s;
+    letter-spacing: 1px;
 }
 
 .lang-btn:hover {
     background: #fff;
     color: #000;
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(255,255,255,0.1);
 }
 
 /* ==========================================================================
-   4. SPACE BACKGROUND
+   4. SPACE & PLANETS ANIMATION
    ========================================================================== */
 .space-container {
     position: fixed;
     inset: 0;
     z-index: -1;
     overflow: hidden;
-    pointer-events: none;
 }
 
 .stars {
-    width: 2px;
-    height: 2px;
-    background: transparent;
-    box-shadow: 10vw 20vh var(--star-color), 30vw 40vh var(--star-color), 50vw 10vh var(--star-color),
-                70vw 80vh var(--star-color), 90vw 30vh var(--star-color), 20vw 90vh var(--star-color),
-                40vw 60vh var(--star-color), 60vw 20vh var(--star-color), 80vw 70vh var(--star-color);
-    animation: pulseStars 5s infinite alternate;
-}
-
-.stars2 {
     position: absolute;
-    inset: 0;
-    width: 1px;
-    height: 1px;
-    background: transparent;
-    box-shadow: 15vw 25vh #fff, 35vw 45vh #fff, 55vw 15vh #fff, 75vw 85vh #fff, 95vw 35vh #fff;
-    animation: twinkle 7s infinite ease-in-out;
+    width: 2px; height: 2px; background: transparent;
+    box-shadow: 10vw 20vh #fff, 30vw 40vh #fff, 50vw 10vh #fff, 70vw 80vh #fff, 90vw 30vh #fff, 20vw 90vh #fff, 40vw 60vh #fff, 60vw 20vh #fff, 80vw 70vh #fff;
+    animation: pulse 4s infinite alternate;
 }
 
-@keyframes pulseStars { 0% { opacity: 0.2; } 100% { opacity: 0.8; } }
-@keyframes twinkle { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.6; } }
+@keyframes pulse { from { opacity: 0.2; } to { opacity: 0.8; } }
 
 .planet {
     position: absolute;
     border-radius: 50%;
-    animation: float 20s infinite alternate ease-in-out;
+    transition: all 2s cubic-bezier(0.65, 0, 0.35, 1);
+    filter: blur(1px); box-shadow: 0 0 100px rgba(59, 130, 246, 0.2);
 }
 
-.planet-primary { width: 400px; height: 400px; background: var(--planet-left); bottom: -100px; left: -100px; opacity: 0.6; }
-.planet-secondary { width: 250px; height: 250px; background: var(--planet-right); top: 10%; right: -50px; opacity: 0.5; animation-duration: 25s; }
+/* Initial positions (Centered-ish or tucked away) */
+.planet-primary {
+    width: 500px; height: 500px;
+    background: var(--planet-left);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.4;
+}
 
-@keyframes float { 0% { transform: translate(0, 0) rotate(0); } 100% { transform: translate(20px, 30px) rotate(5deg); } }
+.planet-secondary {
+    width: 300px; height: 300px;
+    background: var(--planet-right);
+    top: 40%; left: 60%;
+    transform: translate(-50%, -50%);
+    opacity: 0.3;
+}
+
+/* Positions after selection */
+body.selected .planet-primary {
+    top: 100%; left: 0%;
+    transform: translate(-30%, -70%);
+    opacity: 0.7;
+}
+
+body.selected .planet-secondary {
+    top: 0%; left: 100%;
+    transform: translate(-70%, 30%);
+    opacity: 0.6;
+}
 
 /* ==========================================================================
-   5. NAVBAR (Liquidglass Morph)
+   5. NAVBAR & HERO
    ========================================================================== */
 .navbar {
     position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 1000px;
+    top: 30px; left: 50%; transform: translateX(-50%);
+    width: 90%; max-width: 1100px;
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
-    padding: 1rem 2.5rem;
+    padding: 1.2rem 3rem;
     border-radius: 100px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex; justify-content: space-between; align-items: center;
     z-index: 100;
 }
 
-.logo {
-    font-weight: 900;
-    font-size: 1.5rem;
-    background: linear-gradient(to right, var(--accent-color), #ec4899);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+.logo { font-weight: 900; font-size: 1.6rem; letter-spacing: 1px; color: #fff; }
 
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-}
+.nav-links { display: flex; align-items: center; gap: 2.5rem; }
 
-.theme-switch {
-    background: transparent;
-    border: none;
-    color: var(--text-primary);
-    cursor: pointer;
-    font-size: 1.2rem;
-}
-
-/* ==========================================================================
-   6. HERO SECTION
-   ========================================================================== */
-.hero {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 2rem;
-}
-
-.hero-content {
-    transition: transform 0.1s ease-out;
-}
+.hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 
 .beautiful-font {
-    font-size: clamp(3rem, 10vw, 6rem);
+    font-size: clamp(3.5rem, 12vw, 7rem);
     font-weight: 900;
-    margin-bottom: 1rem;
-    background: linear-gradient(to bottom, #fff, rgba(255,255,255,0.4));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    margin-bottom: 1.5rem;
+    letter-spacing: -2px;
 }
 
-.subtitle {
-    font-size: clamp(1rem, 3vw, 1.5rem);
-    color: var(--text-muted);
-    max-width: 800px;
-}
+.subtitle { font-size: 1.4rem; color: var(--text-muted); max-width: 800px; line-height: 1.6; }
 
 /* ==========================================================================
-   7. PROJECTS SECTION (Large Morph Panels)
+   6. PROJECTS (Morph Panels)
    ========================================================================== */
-.main-content {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 5rem 2rem;
-    opacity: 0;
-    transform: translateY(50px);
-    transition: 1s ease;
-}
-
+.main-content { max-width: 950px; margin: 0 auto; padding: 10rem 2rem; opacity: 0; transform: translateY(100px); }
 .main-content.visible { opacity: 1; transform: translateY(0); }
-
-.projects-list { display: flex; flex-direction: column; gap: 4rem; }
 
 .project-card {
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
-    padding: 3.5rem;
-    border-radius: 40px;
-    position: relative;
-    overflow: hidden;
+    padding: 4rem; border-radius: 48px;
+    margin-bottom: 5rem;
 }
 
-.project-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
-    pointer-events: none;
-}
+.project-card h3 { font-size: 2.8rem; margin-bottom: 2rem; }
+.project-card p { font-size: 1.2rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 3rem; }
 
-.project-card h3 { font-size: 2.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 15px; }
-.card-icon-vpn { color: #6366f1; }
-.card-icon-find { color: #ec4899; }
-
-.project-card p { line-height: 1.8; color: var(--text-muted); margin-bottom: 2.5rem; font-size: 1.1rem; }
-
-.card-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-
-.btn {
-    padding: 0.8rem 1.8rem;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    transition: 0.3s;
-}
-
+.btn { padding: 1rem 2rem; border-radius: 16px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 12px; }
 .btn-git { background: #1e2228; color: #fff; }
 .btn-tg { background: #229ED9; color: #fff; }
-.btn-bot { background: rgba(168, 85, 247, 0.2); color: #fff; border: 1px solid #a855f7; }
 
-.btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+.btn:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
 
-/* ==========================================================================
-   8. MODALS
-   ========================================================================== */
-#settings-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(15px);
-    z-index: 2000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.5s;
-}
-
+#settings-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); z-index: 2000; display: flex; justify-content: center; align-items: center; transition: 0.5s; }
 #settings-modal.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
-/* ==========================================================================
-   9. MOBILE
-   ========================================================================== */
-@media (max-width: 768px) {
-    .navbar { padding: 0.8rem 1.5rem; }
-    .project-card { padding: 2rem; }
-    .btn { width: 100%; justify-content: center; }
-}
