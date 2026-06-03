@@ -1,20 +1,19 @@
-/* --- Глобальные переменные стилей (Переключение Тем и Свойства Стекла) --- */
+/* ==========================================================================
+   1. ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ И ТЕМЫ (Темная / Светлая)
+   ========================================================================== */
 :root {
     --bg-gradient: linear-gradient(135deg, #03030a 0%, #08071a 50%, #020205 100%);
     --text-primary: #ffffff;
     --text-muted: rgba(255, 255, 255, 0.7);
     
-    /* Свойства Liquidglass (Dark Mode) с голубоватым оттенком */
-    --glass-bg: rgba(10, 12, 32, 0.45);
+    /* Эффект Liquidglass (Dark Mode) с глубоким размытием и голубоватым оттенком */
+    --glass-bg: rgba(10, 12, 32, 0.5);
     --glass-border: rgba(255, 255, 255, 0.08);
     --glass-blur: blur(25px);
     --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 
-                    inset 0 1px 0px rgba(255, 255, 255, 0.1);
+                    inset 0 1px 1px rgba(255, 255, 255, 0.15);
     
-    --accent-color: #4f46e5;
-    --accent-glow: rgba(79, 70, 229, 0.4);
-    
-    /* Градиенты планет */
+    --accent-color: #6366f1;
     --planet-left: radial-gradient(circle at 30% 30%, #3b82f6, #061f4d, #000);
     --planet-right: radial-gradient(circle at 30% 30%, #6366f1, #2e1065, #000);
     --star-color: #ffffff;
@@ -25,22 +24,21 @@
     --text-primary: #0f172a;
     --text-muted: rgba(15, 23, 42, 0.7);
     
-    /* Свойства Liquidglass (Light Mode) */
-    --glass-bg: rgba(255, 255, 255, 0.45);
+    /* Эффект Liquidglass (Light Mode) */
+    --glass-bg: rgba(255, 255, 255, 0.5);
     --glass-border: rgba(15, 23, 42, 0.08);
     --glass-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.1), 
-                    inset 0 1px 0px rgba(255, 255, 255, 0.6);
+                    inset 0 1px 1px rgba(255, 255, 255, 0.6);
     
     --accent-color: #3b82f6;
-    --accent-glow: rgba(59, 130, 246, 0.2);
-    
-    /* Градиенты планет для светлой темы */
     --planet-left: radial-gradient(circle at 30% 30%, #93c5fd, #2563eb);
     --planet-right: radial-gradient(circle at 30% 30%, #c7d2fe, #4f46e5);
     --star-color: #4f46e5;
 }
 
-/* --- Сброс стилей базовых элементов --- */
+/* ==========================================================================
+   2.БАЗОВЫЕ СТИЛИ И СБРОС
+   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -63,7 +61,9 @@ body.scroll-locked {
     overflow: hidden;
 }
 
-/* --- Стартовая панель выбора языка --- */
+/* ==========================================================================
+   3. СТАРТОВАЯ ПАНЕЛЬ (Выбор языка)
+   ========================================================================== */
 #lang-overlay {
     position: fixed;
     inset: 0;
@@ -127,7 +127,9 @@ body.scroll-locked {
     box-shadow: 0 15px 30px rgba(255, 255, 255, 0.15);
 }
 
-/* --- Космический Фон со Звездами и Планетами --- */
+/* ==========================================================================
+   4. КОСМИЧЕСКИЙ ФОН (Звезды и Планеты)
+   ========================================================================== */
 .space-container {
     position: fixed;
     inset: 0;
@@ -136,7 +138,6 @@ body.scroll-locked {
     pointer-events: none;
 }
 
-/* Эффект звезд через тени */
 .stars {
     width: 2px;
     height: 2px;
@@ -155,7 +156,7 @@ body.scroll-locked {
 .planet {
     position: absolute;
     border-radius: 50%;
-    animation: floatPlanet 10s ease-in-out infinite alternate;
+    animation: floatPlanet 12s ease-in-out infinite alternate;
 }
 
 .planet-primary {
@@ -172,19 +173,21 @@ body.scroll-locked {
     width: 280px;
     height: 280px;
     background: var(--planet-right);
-    top: 10%;
+    top: 15%;
     right: -80px;
     opacity: 0.7;
     box-shadow: 0 0 60px rgba(99, 102, 241, 0.15);
-    animation-duration: 14s;
+    animation-duration: 16s;
 }
 
 @keyframes floatPlanet {
     0% { transform: translateY(0) rotate(0deg); }
-    100% { transform: translateY(30px) rotate(5deg); }
+    100% { transform: translateY(35px) rotate(6deg); }
 }
 
-/* --- Liquidglass Навигация --- */
+/* ==========================================================================
+   5. НАВИГАЦИОННАЯ ПАНЕЛЬ (Liquidglass)
+   ========================================================================== */
 .navbar {
     position: fixed;
     top: 24px;
@@ -232,7 +235,9 @@ body.scroll-locked {
     background: rgba(255, 255, 255, 0.08);
 }
 
-/* --- Главный Экран (Hero) --- */
+/* ==========================================================================
+   6. ГЛАВНЫЙ ЭКРАН (Hero) И АНИМАЦИЯ СКРОЛЛА
+   ========================================================================== */
 .hero {
     height: 100vh;
     display: flex;
@@ -265,7 +270,6 @@ body.scroll-locked {
     max-width: 600px;
 }
 
-/* Анимированный скролл-индикатор */
 .scroll-indicator {
     position: absolute;
     bottom: 50px;
@@ -306,7 +310,9 @@ body.scroll-locked {
     100% { top: 8px; opacity: 1; }
 }
 
-/* --- Секция Проектов (Вертикальный контейнер) --- */
+/* ==========================================================================
+   7. СЕКЦИЯ ПРОЕКТОВ (Вертикальное расположение)
+   ========================================================================== */
 .main-content {
     max-width: 850px;
     margin: 0 auto;
@@ -317,7 +323,7 @@ body.scroll-locked {
                 transform 0.8s cubic-bezier(0.215, 0.610, 0.355, 1);
 }
 
-/* Класс, добавляемый через JS при скролле */
+/* Проявление блока при скролле */
 .main-content.visible {
     opacity: 1;
     transform: translateY(0);
@@ -326,10 +332,12 @@ body.scroll-locked {
 .projects-list {
     display: flex;
     flex-direction: column;
-    gap: 3.5rem; /* Отступ между панелями, вторая строго снизу */
+    gap: 3.5rem; /* Четкий отступ: вторая панель всегда строго снизу */
 }
 
-/* --- Панели Liquidglass для Проектов --- */
+/* ==========================================================================
+   8. КАРТОЧКИ ПРОЕКТОВ (Liquidglass Дизайн)
+   ========================================================================== */
 .project-card {
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
@@ -345,7 +353,7 @@ body.scroll-locked {
     overflow: hidden;
 }
 
-/* Мягкий внутренний отблеск панелей */
+/* Внутренний световой блик для объема стекла */
 .project-card::after {
     content: '';
     position: absolute;
@@ -373,14 +381,13 @@ body.scroll-locked {
     font-weight: 400;
 }
 
-/* Блок ссылок внизу карточки */
+/* Кнопки и ссылки */
 .card-links {
     display: flex;
     flex-wrap: wrap;
     gap: 1.2rem;
 }
 
-/* Кнопки */
 .btn {
     padding: 0.9rem 1.8rem;
     border-radius: 14px;
@@ -426,7 +433,9 @@ body.scroll-locked {
     box-shadow: 0 10px 25px rgba(168, 85, 247, 0.3);
 }
 
-/* --- Адаптивность для мобильных экранов --- */
+/* ==========================================================================
+   9. АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ
+   ========================================================================== */
 @media (max-width: 768px) {
     .beautiful-font { font-size: 3.2rem; }
     .subtitle { font-size: 1.1rem; }
@@ -434,4 +443,4 @@ body.scroll-locked {
     .card-body h3 { font-size: 1.7rem; }
     .navbar { padding: 1rem 1.5rem; }
     .btn { width: 100%; justify-content: center; }
-                          }
+    }
