@@ -8,28 +8,44 @@
 </head>
 <body>
 
-    <canvas id="space"></canvas>
+    <div class="space-wrapper">
+        <canvas id="space"></canvas>
+        <div class="planet planet-1"></div>
+        <div class="planet planet-2"></div>
+    </div>
 
-    <div id="loader" class="glass-panel">
+    <div id="loader" class="glass-modal">
         <h2 id="load-title">Select Language / Выберите язык</h2>
-        <div class="lang-btns">
-            <button onclick="setLang('en')">English</button>
-            <button onclick="setLang('ru')">Русский</button>
+        <div class="lang-container">
+            <button class="lang-tile" onclick="setLang('en')">
+                <span class="lang-main">English</span>
+                <span class="lang-sub">Global</span>
+            </button>
+            <button class="lang-tile" onclick="setLang('ru')">
+                <span class="lang-main">Русский</span>
+                <span class="lang-sub">Регион</span>
+            </button>
         </div>
     </div>
 
     <nav class="nav-bar glass-panel">
         <div class="logo">FlareSpace</div>
-        <div class="nav-links">
+        <div class="nav-controls">
             <span id="nav-settings">Settings</span>
-            <span id="theme-toggle">🌓</span>
+            <div class="theme-tab">
+                <div class="tab-slider"></div>
+                <button class="tab-btn active" onclick="switchTheme('dark', this)">Dark</button>
+                <button class="tab-btn" onclick="switchTheme('light', this)">Light</button>
+            </div>
         </div>
     </nav>
 
     <main>
         <section class="hero">
             <h1 id="hero-text">FlareSpace - Various stars of space, similar to various FlareSpace projects.</h1>
-            <div class="scroll-indicator">↓</div>
+            <div class="scroll-indicator">
+                <div class="mouse-wheel"></div>
+            </div>
         </section>
 
         <section class="projects">
