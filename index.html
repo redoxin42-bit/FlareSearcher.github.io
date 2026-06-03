@@ -56,11 +56,11 @@
                     <p data-key="vpn-desc">A highly secure, fast, and completely anonymous premium VPN service designed to keep your connection protected and digital footprints clean.</p>
                 </div>
                 <div class="card-links">
-                    <a href="https://github.com" target="_blank" class="btn btn-git">
-                        <i class="fa-brands fa-github"></i> <span>Repository</span>
+                    <a href="https://github.com/FlareSpace/FlareVPN" target="_blank" class="btn btn-git">
+                        <i class="fa-brands fa-github"></i> <span data-key="repo-text">Repository</span>
                     </a>
-                    <a href="https://t.me" target="_blank" class="btn btn-tg">
-                        <i class="fa-brands fa-telegram"></i> <span>Telegram Channel</span>
+                    <a href="https://t.me/FlareApp" target="_blank" class="btn btn-tg">
+                        <i class="fa-brands fa-telegram"></i> <span data-key="tg-text">Telegram Channel</span>
                     </a>
                 </div>
             </section>
@@ -90,18 +90,23 @@
                 "hero-subtitle": "Many convenient and useful tools.",
                 "scroll-text": "Scroll Down",
                 "vpn-desc": "A highly secure, fast, and completely anonymous premium VPN service designed to keep your connection protected and digital footprints clean.",
-                "find-desc": "FlareFind is a search engine for beautiful telegram usernames."
+                "find-desc": "FlareFind is a search engine for beautiful telegram usernames.",
+                "repo-text": "Repository",
+                "tg-text": "Telegram Channel"
             },
             ru: {
                 "hero-subtitle": "Множество удобных и полезных инструментов.",
                 "scroll-text": "Листайте вниз",
                 "vpn-desc": "Высокоскоростной, безопасный и абсолютно анонимный VPN-сервис премиум-класса, созданный для надежной защиты вашего соединения.",
-                "find-desc": "FlareFind — это поисковая система для красивых юзернеймов в Telegram."
+                "find-desc": "FlareFind — это поисковая система для красивых юзернеймов в Telegram.",
+                "repo-text": "Репозиторий",
+                "tg-text": "Телеграм канал"
             }
         };
 
         // Логика выбора языка
         function selectLanguage(lang) {
+            localStorage.setItem('flare-lang', lang);
             document.querySelectorAll('[data-key]').forEach(element => {
                 const key = element.getAttribute('data-key');
                 if (translations[lang][key]) {
@@ -111,7 +116,16 @@
             const overlay = document.getElementById('lang-overlay');
             overlay.classList.add('hidden');
             document.body.classList.remove('scroll-locked');
+            document.body.classList.add('ready');
         }
+
+        // Автоматическая подгрузка языка
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('flare-lang');
+            if (savedLang) {
+                selectLanguage(savedLang);
+            }
+        });
 
         // Переключение тем оформления (Темная / Светлая)
         function toggleTheme() {
