@@ -7,11 +7,12 @@
     --text-muted: rgba(255, 255, 255, 0.7);
     
     /* Эффект Liquidglass (Dark Mode) с глубоким размытием и голубоватым оттенком */
-    --glass-bg: rgba(10, 12, 32, 0.5);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-blur: blur(25px);
-    --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 
-                    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    --glass-bg: rgba(13, 18, 45, 0.65);
+    --glass-border: rgba(100, 150, 255, 0.2);
+    --glass-blur: blur(30px);
+    --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
+                    inset 0 1px 2px rgba(255, 255, 255, 0.2),
+                    inset 0 -1px 2px rgba(0, 0, 0, 0.3);
     
     --accent-color: #6366f1;
     --planet-left: radial-gradient(circle at 30% 30%, #3b82f6, #061f4d, #000);
@@ -81,16 +82,26 @@ body.scroll-locked {
 }
 
 .lang-panel {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
     padding: 3.5rem;
     border-radius: 28px;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
     text-align: center;
     max-width: 90%;
     width: 500px;
+    position: relative;
+    overflow: hidden;
+}
+
+.lang-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+    pointer-events: none;
 }
 
 .lang-panel h2 {
@@ -138,19 +149,47 @@ body.scroll-locked {
     pointer-events: none;
 }
 
-.stars {
-    width: 2px;
-    height: 2px;
+.stars, .stars2, .stars3 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: transparent;
-    box-shadow: 93vw 12vh var(--star-color), 15vw 45vh var(--star-color), 55vw 85vh var(--star-color), 
-                34vw 22vh var(--star-color), 75vw 63vh var(--star-color), 10vw 88vh var(--star-color), 
-                42vw 51vh var(--star-color), 88vw 31vh var(--star-color), 64vw 15vh var(--star-color);
-    animation: pulseStars 6s infinite alternate;
+    pointer-events: none;
 }
 
-@keyframes pulseStars {
-    0% { opacity: 0.3; }
-    100% { opacity: 0.9; }
+.stars {
+    width: 1px;
+    height: 1px;
+    box-shadow: 10vw 10vh var(--star-color), 20vw 80vh var(--star-color), 40vw 30vh var(--star-color),
+                60vw 70vh var(--star-color), 80vw 20vh var(--star-color), 90vw 90vh var(--star-color),
+                15vw 45vh var(--star-color), 55vw 85vh var(--star-color), 75vw 63vh var(--star-color),
+                34vw 22vh var(--star-color), 42vw 51vh var(--star-color), 88vw 31vh var(--star-color);
+    animation: twinkle 4s infinite ease-in-out;
+}
+
+.stars2 {
+    width: 2px;
+    height: 2px;
+    box-shadow: 25vw 15vh var(--star-color), 35vw 85vh var(--star-color), 50vw 40vh var(--star-color),
+                70vw 60vh var(--star-color), 85vw 10vh var(--star-color), 95vw 75vh var(--star-color),
+                5vw 55vh var(--star-color), 45vw 25vh var(--star-color), 65vw 95vh var(--star-color);
+    animation: twinkle 6s infinite ease-in-out 1s;
+}
+
+.stars3 {
+    width: 3px;
+    height: 3px;
+    box-shadow: 5vw 25vh var(--star-color), 15vw 75vh var(--star-color), 30vw 50vh var(--star-color),
+                50vw 80vh var(--star-color), 75vw 15vh var(--star-color), 85vw 65vh var(--star-color),
+                95vw 35vh var(--star-color), 40vw 10vh var(--star-color), 60vw 40vh var(--star-color);
+    animation: twinkle 8s infinite ease-in-out 2s;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
 }
 
 .planet {
@@ -215,6 +254,32 @@ body.scroll-locked {
     background: linear-gradient(45deg, var(--accent-color), #ec4899);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--accent-color);
 }
 
 .theme-switch {
@@ -351,6 +416,14 @@ body.scroll-locked {
     gap: 2.5rem;
     position: relative;
     overflow: hidden;
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.project-card.card-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
 /* Внутренний световой блик для объема стекла */
@@ -442,5 +515,7 @@ body.scroll-locked {
     .project-card { padding: 2rem; gap: 2rem; }
     .card-body h3 { font-size: 1.7rem; }
     .navbar { padding: 1rem 1.5rem; }
+    .nav-btn-text { display: none; }
+    .nav-btn { padding: 0.6rem; }
     .btn { width: 100%; justify-content: center; }
-    }
+}
