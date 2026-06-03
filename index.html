@@ -1,170 +1,58 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Flare Find Premium</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlareSpace</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
-    <div class="bg-glow-2"></div>
+    <canvas id="space"></canvas>
 
-    <div class="app-container">
-
-        <div class="morph-panel auth-screen" id="authScreen">
-            <div class="logo-area">
-                <i data-lucide="shield-alert" class="logo-icon"></i>
-                <h1>Flare Find</h1>
-            </div>
-
-            <div class="instruction-card">
-                <p>Для инициализации сессии и синхронизации баланса отправьте ваш персональный токен из бота <span>@flarefreeproxybot</span></p>
-            </div>
-
-            <div class="input-group">
-                <input type="text" id="tokenField" class="token-input" placeholder="Введите токен авторизации..." autocomplete="off">
-                <i data-lucide="key-round"></i>
-            </div>
-
-            <button class="submit-btn" id="loginBtn">
-                <span>Продолжить</span>
-                <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
-            </button>
+    <div id="loader" class="glass-panel">
+        <h2 id="load-title">Select Language / Выберите язык</h2>
+        <div class="lang-btns">
+            <button onclick="setLang('en')">English</button>
+            <button onclick="setLang('ru')">Русский</button>
         </div>
-
-        <div class="main-screen" id="mainScreen">
-            <div class="morph-panel header-panel">
-                <div class="header-title">Flare Find Premium</div>
-            </div>
-
-            <div class="scroll-viewport" id="scrollViewport">
-                
-                <div class="scroll-section">
-                    <div class="morph-panel balance-card">
-                        <div class="balance-label">
-                            <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
-                            Текущий лимит аккаунта
-                        </div>
-                        <div class="balance-value" id="balanceCount">0</div>
-                        <div class="balance-sub">Доступно запросов</div>
-                    </div>
-
-                    <div class="scroll-hint">
-                        <span>Пролистайте ниже для оплаты</span>
-                        <i data-lucide="chevron-down" style="width: 18px; height: 18px;"></i>
-                    </div>
-                </div>
-
-                <div class="scroll-section" style="justify-content: center;">
-                    <div class="morph-panel payment-card">
-                        <div class="payment-title">Продление Premium Доступа</div>
-                        
-                        <div class="offer-box">
-                            <div class="offer-info-text">
-                                <h4>Premium Пакет</h4>
-                                <p>Добавляет +5000 новых поисков</p>
-                            </div>
-                            <div class="price-tag">
-                                <span>50</span>
-                                <i data-lucide="star"></i>
-                            </div>
-                        </div>
-
-                        <div class="features-list">
-                            <div class="feature-item">
-                                <i data-lucide="check-circle-2"></i>
-                                <span>Приоритетная скорость обработки данных</span>
-                            </div>
-                            <div class="feature-item">
-                                <i data-lucide="check-circle-2"></i>
-                                <span>Снятие ограничений по потокам параллельного поиска</span>
-                            </div>
-                            <div class="feature-item">
-                                <i data-lucide="check-circle-2"></i>
-                                <span>Доступ к приватным базам OSINT-проверок</span>
-                            </div>
-                        </div>
-
-                        <button class="pay-button" id="payBtn">
-                            <i data-lucide="credit-card" style="width: 18px; height: 18px;"></i>
-                            <span>Оплатить через Stars</span>
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
     </div>
 
-    <div class="toast" id="toastBox">
-        <span id="toastText">Ошибка авторизации</span>
-    </div>
+    <nav class="nav-bar glass-panel">
+        <div class="logo">FlareSpace</div>
+        <div class="nav-links">
+            <span id="nav-settings">Settings</span>
+            <span id="theme-toggle">🌓</span>
+        </div>
+    </nav>
 
-    <script>
-        // Рендерим векторные иконки
-        lucide.createIcons();
+    <main>
+        <section class="hero">
+            <h1 id="hero-text">FlareSpace - Various stars of space, similar to various FlareSpace projects.</h1>
+            <div class="scroll-indicator">↓</div>
+        </section>
 
-        const authScreen = document.getElementById('authScreen');
-        const mainScreen = document.getElementById('mainScreen');
-        const tokenField = document.getElementById('tokenField');
-        const loginBtn = document.getElementById('loginBtn');
-        const balanceCount = document.getElementById('balanceCount');
-        const payBtn = document.getElementById('payBtn');
-        const toastBox = document.getElementById('toastBox');
-        const toastText = document.getElementById('toastText');
+        <section class="projects">
+            <div class="project-card glass-panel fade-in">
+                <h2>FlareVpn</h2>
+                <p id="vpn-desc">Fast and secure VPN adapter for ultimate privacy.</p>
+                <div class="links">
+                    <a href="https://github.com" target="_blank" id="vpn-gh">GitHub</a>
+                    <a href="https://t.me" target="_blank" id="vpn-tg">Telegram Channel</a>
+                </div>
+            </div>
 
-        function showToast(text, type = 'error') {
-            toastText.innerText = text;
-            toastBox.className = `toast ${type} show`;
-            
-            const iconName = type === 'success' ? 'check-circle' : 'alert-circle';
-            toastBox.innerHTML = `<i data-lucide="${iconName}" style="width: 18px; height: 18px;"></i> <span>${text}</span>`;
-            lucide.createIcons();
+            <div class="project-card glass-panel fade-in">
+                <h2>FlareFind</h2>
+                <p id="find-desc">Advanced bot to search for rare and unique usernames.</p>
+                <div class="links">
+                    <a href="https://t.me/FlareFind" target="_blank">@FlareFind</a>
+                    <a href="https://t.me/FlareFindBot" target="_blank">@FlareFindBot</a>
+                </div>
+            </div>
+        </section>
+    </main>
 
-            setTimeout(() => {
-                toastBox.classList.remove('show');
-            }, 3000);
-        }
-
-        // Логика кнопки авторизации
-        loginBtn.addEventListener('click', () => {
-            const tokenValue = tokenField.value.trim();
-
-            if (!tokenValue) {
-                showToast('Поле ввода токена не может быть пустым', 'error');
-                return;
-            }
-
-            showToast('Авторизация успешна', 'success');
-            balanceCount.innerText = "150";
-
-            authScreen.classList.add('hidden');
-            
-            setTimeout(() => {
-                mainScreen.classList.add('active');
-            }, 300);
-        });
-
-        // Симуляция оплаты Telegram Stars
-        payBtn.addEventListener('click', () => {
-            showToast('Запрос на оплату 50 Stars отправлен!', 'success');
-            
-            setTimeout(() => {
-                const currentBalance = parseInt(balanceCount.innerText);
-                balanceCount.innerText = currentBalance + 5000;
-                showToast('Баланс успешно обновлен (+5000)!', 'success');
-                
-                // Возвращаем скролл наверх к балансу
-                document.getElementById('scrollViewport').scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            }, 2500);
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
