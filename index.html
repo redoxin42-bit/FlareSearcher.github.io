@@ -3,73 +3,411 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlareSpace Hub</title>
-    <link rel="stylesheet" href="style.css">
+    <title>FlareSpace</title>
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for clean icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #070714 0%, #0f0c20 50%, #05050d 100%);
+            --text-color: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-shadow: rgba(0, 0, 0, 0.4);
+            --accent-color: #6366f1;
+            --planet-1: radial-gradient(circle at 30% 30%, #4f46e5, #000000);
+            --planet-2: radial-gradient(circle at 30% 30%, #ec4899, #1e051b);
+        }
+
+        .light-theme {
+            --bg-gradient: linear-gradient(135deg, #f0f2f5 0%, #e2e8f0 100%);
+            --text-color: #1e293b;
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: rgba(31, 38, 135, 0.08);
+            --accent-color: #4f46e5;
+            --planet-1: radial-gradient(circle at 30% 30%, #818cf8, #c7d2fe);
+            --planet-2: radial-gradient(circle at 30% 30%, #f472b6, #fbcfe8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            transition: background 0.5s ease, color 0.5s ease, border 0.5s ease;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 200vh;
+        }
+
+        /* --- Language Overlay --- */
+        #lang-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 15, 0.95);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s;
+        }
+
+        #lang-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .lang-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .lang-panel h2 {
+            margin-bottom: 2rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #fff;
+        }
+
+        .lang-buttons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .lang-btn {
+            padding: 1rem 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn:hover {
+            background: #ffffff;
+            color: #000000;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+        }
+
+        /* --- Space & Planets Background --- */
+        .space-container {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+
+        .planet-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--planet-1);
+            top: 15%;
+            right: -50px;
+            box-shadow: 0 0 60px rgba(99, 102, 241, 0.2);
+            animation-duration: 12s;
+        }
+
+        .planet-2 {
+            width: 150px;
+            height: 150px;
+            background: var(--planet-2);
+            bottom: 20%;
+            left: -30px;
+            box-shadow: 0 0 40px rgba(236, 72, 153, 0.15);
+            animation-duration: 9s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(25px) rotate(10deg); }
+        }
+
+        /* --- Liquidglass Navbar --- */
+        .navbar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, var(--accent-color), #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .theme-switch {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+            position: relative;
+        }
+
+        .hero-title h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .hero-title p {
+            font-size: 1.5rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.9rem;
+            opacity: 0.6;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* --- Projects Section --- */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        /* --- Liquidglass Cards --- */
+        .project-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
+            border-radius: 24px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 380px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .project-card h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .project-card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .card-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: auto;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-git {
+            background: #24292e;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-git:hover { background: #33393f; transform: translateY(-2px); }
+
+        .btn-tg {
+            background: #229ED9;
+            color: #fff;
+        }
+        .btn-tg:hover { background: #28a9e6; transform: translateY(-2px); }
+
+        .btn-bot {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--text-color);
+            border: 1px solid var(--accent-color);
+        }
+        .btn-bot:hover { background: var(--accent-color); color: #fff; transform: translateY(-2px); }
+
+        @media (max-width: 768px) {
+            .hero-title h1 { font-size: 2.5rem; }
+            .hero-title p { font-size: 1.1rem; }
+            .projects-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
-    <canvas id="space-canvas"></canvas>
-
+    <!-- Language Selector Modal -->
     <div id="lang-overlay">
-        <div class="lang-panel liquid-glass">
-            <h2>Select Language / Выберите язык</h2>
+        <div class="lang-panel">
+            <h2>SELECT LANGUAGE / ВЫБЕРИТЕ ЯЗЫК</h2>
             <div class="lang-buttons">
-                <button class="lang-btn" onclick="setLanguage('en')">English</button>
-                <button class="lang-btn" onclick="setLanguage('ru')">Русский</button>
+                <button class="lang-btn" onclick="selectLanguage('en')">English</button>
+                <button class="lang-btn" onclick="selectLanguage('ru')">Русский</button>
             </div>
         </div>
     </div>
 
-    <header class="upper-morph-panel liquid-glass">
+    <!-- Animated Space Background -->
+    <div class="space-container">
+        <div class="planet planet-1"></div>
+        <div class="planet planet-2"></div>
+    </div>
+
+    <!-- Top Navigation Panel -->
+    <nav class="navbar">
         <div class="logo">FlareSpace</div>
-        <div class="nav-controls">
-            <button class="control-btn" title="Settings" onclick="alert('Settings panel ready.')">
-                <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
-            </button>
-            <button class="control-btn" title="Toggle Light/Dark Theme" onclick="toggleTheme()">
-                <svg viewBox="0 0 24 24"><path d="M12,18c-3.31,0-6-2.69-6-6s2.69-6,6-6s6,2.69,6,6S15.31,18,12,18z M12,20c4.42,0,8-3.58,8-8s-3.58-8-8-8s-8,3.58-8,8 S7.58,20,12,20z"/></svg>
-            </button>
+        <button class="theme-switch" onclick="toggleTheme()" id="theme-btn" aria-label="Toggle Theme">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+    </nav>
+
+    <!-- Hero Header Context -->
+    <header class="hero" id="hero-section">
+        <div class="hero-title" id="hero-text">
+            <h1 data-key="hero-title">FlareSpace</h1>
+            <p data-key="hero-subtitle">Many convenient and useful tools.</p>
+        </div>
+        <div class="scroll-indicator" id="scroll-hint">
+            <span data-key="scroll-text">Scroll Down</span>
+            <i class="fa-solid fa-chevron-down" style="margin-top: 8px;"></i>
         </div>
     </header>
 
-    <section class="hero-section">
-        <div class="hero-text-container" id="hero-text">
-            <h1 class="hero-title">FlareSpace</h1>
-            <p class="hero-subtitle lang-en">Various stars of space, similar to various FlareSpace projects.</p>
-            <p class="hero-subtitle lang-ru hidden-lang">Различные звезды космоса, подобные различным проектам FlareSpace.</p>
-        </div>
-
-        <div class="scroll-indicator">
-            <div class="scroll-mouse">
-                <div class="scroll-wheel"></div>
-            </div>
-        </div>
-    </section>
-
-    <main class="main-container">
+    <!-- Projects Grid Section -->
+    <main class="main-content" id="projects-section">
         <div class="projects-grid">
             
-            <div class="project-card liquid-glass">
-                <div class="project-header">
-                    <h3>FlareVpn</h3>
-                    <p class="project-desc lang-en">A secure high-performance proxy network engine adapting next-generation protocols for absolute cross-platform security.</p>
-                    <p class="project-desc lang-ru hidden-lang">Высокопроизводительный безопасный прокси-движок, адаптирующий протоколы нового поколения для абсолютной кроссплатформенной безопасности.</p>
+            <!-- Project 1: FlareVPN -->
+            <div class="project-card">
+                <div>
+                    <h3><i class="fa-solid fa-shield-halved" style="color: var(--accent-color)"></i> FlareVpn</h3>
+                    <p data-key="vpn-desc">A highly secure, fast, and completely anonymous premium VPN service designed to keep your connection protected and digital footprints clean.</p>
                 </div>
-                <div class="project-links">
-                    <a href="https://github.com" target="_blank" class="action-link primary">GitHub</a>
-                    <a href="https://t.me/FlareApp" target="_blank" class="action-link">Telegram</a>
+                <div class="card-links">
+                    <a href="https://github.com" target="_blank" class="btn btn-git"><i class="fa-brands fa-github"></i> GitHub</a>
+                    <a href="https://t.me" target="_blank" class="btn btn-tg"><i class="fa-brands fa-telegram"></i> Telegram Channel</a>
                 </div>
             </div>
 
-            <div class="project-card liquid-glass">
-                <div class="project-header">
-                    <h3>FlareFind</h3>
-                    <p class="project-desc lang-en">Advanced automated OSINT utility indexing and tracking beautiful elite vanity usernames inside the Telegram environment.</p>
-                    <p class="project-desc lang-ru hidden-lang">Продвинутая автоматизированная OSINT-утилита для поиска, индексации и мониторинга редких и красивых юзернеймов в Telegram.</p>
+            <!-- Project 2: FlareFind -->
+            <div class="project-card">
+                <div>
+                    <h3><i class="fa-solid fa-magnifying-glass" style="color: #ec4899"></i> FlareFind</h3>
+                    <p data-key="find-desc">FlareFind is a search engine for beautiful telegram usernames.</p>
                 </div>
-                <div class="project-links">
-                    <a href="https://t.me/FlareFindBot" target="_blank" class="action-link primary">@FlareFindBot</a>
-                    <a href="https://t.me/FlareFind" target="_blank" class="action-link">@FlareFind</a>
+                <div class="card-links">
+                    <a href="https://t.me/FlareFind" target="_blank" class="btn btn-tg"><i class="fa-brands fa-telegram"></i> @FlareFind</a>
+                    <a href="https://t.me/FlareFindBot" target="_blank" class="btn btn-bot"><i class="fa-solid fa-robot"></i> @FlareFindBot</a>
                 </div>
             </div>
 
@@ -77,144 +415,73 @@
     </main>
 
     <script>
-        // Космический движок: Звезды и анимированные планеты
-        const canvas = document.getElementById('space-canvas');
-        const ctx = canvas.getContext('2d');
+        // Localization Resource Dictionary
+        const translations = {
+            en: {
+                "hero-title": "FlareSpace",
+                "hero-subtitle": "Many convenient and useful tools.",
+                "scroll-text": "Scroll Down",
+                "vpn-desc": "A highly secure, fast, and completely anonymous premium VPN service designed to keep your connection protected and digital footprints clean.",
+                "find-desc": "FlareFind is a search engine for beautiful telegram usernames."
+            },
+            ru: {
+                "hero-title": "FlareSpace",
+                "hero-subtitle": "Множество удобных и полезных инструментов.",
+                "scroll-text": "Листайте вниз",
+                "vpn-desc": "Высокоскоростной, безопасный и полностью анонимный VPN-сервис премиум-класса для защиты вашего соединения.",
+                "find-desc": "FlareFind — это поисковая система для красивых юзернеймов в Telegram."
+            }
+        };
 
-        let stars = [];
-        let planets = [];
-        let isLightTheme = false;
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initSpace();
+        // Language Handling
+        function selectLanguage(lang) {
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+            document.getElementById('lang-overlay').classList.add('hidden');
+            document.body.style.overflowY = 'auto'; // Re-enable scrolling after selection
         }
 
-        class Star {
-            constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.8;
-                this.speed = 0.05 + Math.random() * 0.15;
-                this.alpha = Math.random();
-                this.fade = 0.005 + Math.random() * 0.01;
-            }
-            update() {
-                this.y -= this.speed; // Медленное движение вверх для эффекта полета
-                if (this.y < 0) this.y = canvas.height;
-                this.alpha += this.fade;
-                if (this.alpha > 1 || this.alpha < 0.2) this.fade = -this.fade;
-            }
-            draw() {
-                ctx.fillStyle = isLightTheme ? `rgba(15, 23, 42, ${this.alpha})` : `rgba(255, 255, 255, ${this.alpha})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+        // Prevent scrolling while language screen is active
+        document.body.style.overflowY = 'hidden';
 
-        class Planet {
-            constructor(x, y, radius, colorStart, colorEnd, speedX, speedY) {
-                this.x = x;
-                this.y = y;
-                this.radius = radius;
-                this.colorStart = colorStart;
-                this.colorEnd = colorEnd;
-                this.speedX = speedX;
-                this.speedY = speedY;
-                this.angle = 0;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.angle += 0.002;
-
-                // Зацикливание выхода планет за границы экрана
-                if (this.x - this.radius > canvas.width) this.x = -this.radius;
-                if (this.x + this.radius < 0) this.x = canvas.width + this.radius;
-                if (this.y - this.radius > canvas.height) this.y = -this.radius;
-                if (this.y + this.radius < 0) this.y = canvas.height + this.radius;
-            }
-            draw() {
-                ctx.save();
-                // Мягкое свечение вокруг планеты
-                ctx.shadowBlur = this.radius * 0.4;
-                ctx.shadowColor = this.colorStart;
-
-                let gradient = ctx.createLinearGradient(
-                    this.x - this.radius, this.y - this.radius, 
-                    this.x + this.radius, this.y + this.radius
-                );
-                gradient.addColorStop(0, this.colorStart);
-                gradient.addColorStop(1, this.colorEnd);
-
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-            }
-        }
-
-        function initSpace() {
-            stars = [];
-            for (let i = 0; i < 120; i++) stars.push(new Star());
-
-            // Инициализация уникальных анимированных планет
-            planets = [
-                new Planet(canvas.width * 0.15, canvas.height * 0.25, 45, '#3b82f6', '#1d4ed8', 0.08, -0.03),  // Голубой гигант
-                new Planet(canvas.width * 0.8, canvas.height * 0.6, 70, '#a855f7', '#4c1d95', -0.05, 0.04),   // Пурпурный экзопланета
-                new Planet(canvas.width * 0.5, canvas.height * 0.85, 25, '#10b981', '#064e3b', 0.03, -0.05)   // Изумрудный спутник
-            ];
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => { s.update(); s.draw(); });
-            planets.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-        animate();
-
-        // Локализация
-        function setLanguage(lang) {
-            document.getElementById('lang-overlay').classList.add('fade-out');
-            if (lang === 'ru') {
-                document.querySelectorAll('.lang-en').forEach(el => el.classList.add('hidden-lang'));
-                document.querySelectorAll('.lang-ru').forEach(el => el.classList.remove('hidden-lang'));
-            } else {
-                document.querySelectorAll('.lang-ru').forEach(el => el.classList.add('hidden-lang'));
-                document.querySelectorAll('.lang-en').forEach(el => el.classList.remove('hidden-lang'));
-            }
-        }
-
-        // Переключение тем День / Ночь
+        // Dark/Light Theme Switch
         function toggleTheme() {
             const body = document.body;
-            if (body.getAttribute('data-theme') === 'light') {
-                body.removeAttribute('data-theme');
-                isLightTheme = false;
+            const themeBtn = document.getElementById('theme-btn').querySelector('i');
+            body.classList.toggle('light-theme');
+            
+            if(body.classList.contains('light-theme')) {
+                themeBtn.className = 'fa-solid fa-sun';
             } else {
-                body.setAttribute('data-theme', 'light');
-                isLightTheme = true;
+                themeBtn.className = 'fa-solid fa-moon';
             }
         }
 
-        // Исчезновение текста при скролле
-        const heroText = document.getElementById('hero-text');
+        // Advanced Scroll Animations
         window.addEventListener('scroll', () => {
-            let scrollVal = window.scrollY;
-            let fadeBreakpoint = window.innerHeight * 0.5;
-            if (scrollVal <= fadeBreakpoint) {
-                heroText.style.opacity = 1 - (scrollVal / fadeBreakpoint);
-                heroText.style.transform = `translateY(${scrollVal * 0.15}px)`;
+            const scrollPos = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const heroText = document.getElementById('hero-text');
+            const scrollHint = document.getElementById('scroll-hint');
+            const projectsSection = document.getElementById('projects-section');
+
+            // Fade out hero contents dynamically based on depth scrolled
+            let fadeRatio = 1 - (scrollPos / (windowHeight * 0.4));
+            fadeRatio = Math.max(0, Math.min(1, fadeRatio)); // Keep between 0 and 1
+            
+            heroText.style.opacity = fadeRatio;
+            heroText.style.transform = `translateY(${scrollPos * 0.3}px)`; // Parallax shift
+            scrollHint.style.opacity = fadeRatio;
+
+            // Trigger the project menu reveal when user reaches target threshold
+            if (scrollPos > windowHeight * 0.25) {
+                projectsSection.classList.add('visible');
             } else {
-                heroText.style.opacity = 0;
+                projectsSection.classList.remove('visible');
             }
         });
     </script>
