@@ -29,17 +29,22 @@
         <div class="planet planet-secondary"></div>
     </div>
 
+
     <nav class="navbar">
         <div class="logo">FlareSpace</div>
-        <button class="theme-switch" onclick="toggleTheme()" id="theme-btn" aria-label="Toggle Theme">
-            <i class="fa-solid fa-moon"></i>
-        </button>
+        <div class="nav-links">
+            <span data-key="nav-settings" onclick="toggleSettings()" style="cursor:pointer;font-size:0.9rem;font-weight:600;color:var(--text-muted)">Settings</span>
+            <button class="theme-switch" onclick="toggleTheme()" id="theme-btn" aria-label="Toggle Theme">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
     </nav>
+
 
     <header class="hero" id="hero-section">
         <div class="hero-content" id="hero-text">
             <h1 class="beautiful-font">FlareSpace</h1>
-            <p class="subtitle" data-key="hero-subtitle">Many convenient and useful tools.</p>
+            <p class="subtitle" data-key="hero-subtitle">Various stars of space, similar to various FlareSpace projects.</p>
         </div>
         <div class="scroll-indicator" id="scroll-hint">
             <span data-key="scroll-text">Scroll Down</span>
@@ -57,10 +62,10 @@
                 </div>
                 <div class="card-links">
                     <a href="https://github.com" target="_blank" class="btn btn-git">
-                        <i class="fa-brands fa-github"></i> <span>Repository</span>
+                        <i class="fa-brands fa-github"></i> <span data-key="repo-btn">Repository</span>
                     </a>
-                    <a href="https://t.me" target="_blank" class="btn btn-tg">
-                        <i class="fa-brands fa-telegram"></i> <span>Telegram Channel</span>
+                    <a href="https://t.me/FlareApp" target="_blank" class="btn btn-tg">
+                        <i class="fa-brands fa-telegram"></i> <span data-key="tg-channel-btn">Telegram Channel</span>
                     </a>
                 </div>
             </section>
@@ -86,18 +91,32 @@
     <script>
         // Словарь локализации (EN / RU)
         const translations = {
+
             en: {
-                "hero-subtitle": "Many convenient and useful tools.",
+                "hero-subtitle": "Various stars of space, similar to various FlareSpace projects.",
                 "scroll-text": "Scroll Down",
                 "vpn-desc": "A highly secure, fast, and completely anonymous premium VPN service designed to keep your connection protected and digital footprints clean.",
-                "find-desc": "FlareFind is a search engine for beautiful telegram usernames."
+                "find-desc": "FlareFind is a search engine for beautiful telegram usernames.",
+                "nav-settings": "Settings",
+                "repo-btn": "Repository",
+                "tg-channel-btn": "Telegram Channel",
+                "settings-desc": "Configuration options coming soon...",
+                "close-btn": "Close"
             },
+
+
             ru: {
-                "hero-subtitle": "Множество удобных и полезных инструментов.",
+                "hero-subtitle": "Различные звезды космоса, подобные различным проектам FlareSpace.",
                 "scroll-text": "Листайте вниз",
                 "vpn-desc": "Высокоскоростной, безопасный и абсолютно анонимный VPN-сервис премиум-класса, созданный для надежной защиты вашего соединения.",
-                "find-desc": "FlareFind — это поисковая система для красивых юзернеймов в Telegram."
+                "find-desc": "FlareFind — это поисковая система для красивых юзернеймов в Telegram.",
+                "nav-settings": "Настройки",
+                "repo-btn": "Репозиторий",
+                "tg-channel-btn": "Telegram Канал",
+                "settings-desc": "Опции конфигурации скоро появятся...",
+                "close-btn": "Закрыть"
             }
+
         };
 
         // Логика выбора языка
@@ -150,6 +169,21 @@
                 projectsSection.classList.remove('visible');
             }
         });
+
+        function toggleSettings() {
+            const modal = document.getElementById("settings-modal");
+            modal.classList.toggle("hidden");
+        }
+
     </script>
+
+    <div id="settings-modal" class="hidden">
+        <div class="lang-panel">
+            <h2 data-key="nav-settings" onclick="toggleSettings()">Settings</h2>
+            <p data-key="settings-desc" style="color:var(--text-muted);margin-bottom:2rem;">Configuration options coming soon...</p>
+            <button class="lang-btn" data-key="close-btn" onclick="toggleSettings()">Close</button>
+        </div>
+    </div>
+
 </body>
 </html>
