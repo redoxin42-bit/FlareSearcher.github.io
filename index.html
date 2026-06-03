@@ -4,349 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FlareSpace</title>
-    <!-- Google Fonts for premium typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome for clean icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #070714 0%, #0f0c20 50%, #05050d 100%);
-            --text-color: #ffffff;
-            --glass-bg: rgba(255, 255, 255, 0.06);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --glass-shadow: rgba(0, 0, 0, 0.4);
-            --accent-color: #6366f1;
-            --planet-1: radial-gradient(circle at 30% 30%, #4f46e5, #000000);
-            --planet-2: radial-gradient(circle at 30% 30%, #ec4899, #1e051b);
-        }
-
-        .light-theme {
-            --bg-gradient: linear-gradient(135deg, #f0f2f5 0%, #e2e8f0 100%);
-            --text-color: #1e293b;
-            --glass-bg: rgba(255, 255, 255, 0.4);
-            --glass-border: rgba(255, 255, 255, 0.6);
-            --glass-shadow: rgba(31, 38, 135, 0.08);
-            --accent-color: #4f46e5;
-            --planet-1: radial-gradient(circle at 30% 30%, #818cf8, #c7d2fe);
-            --planet-2: radial-gradient(circle at 30% 30%, #f472b6, #fbcfe8);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-            transition: background 0.5s ease, color 0.5s ease, border 0.5s ease;
-        }
-
-        body {
-            background: var(--bg-gradient);
-            color: var(--text-color);
-            overflow-x: hidden;
-            min-height: 200vh;
-        }
-
-        /* --- Language Overlay --- */
-        #lang-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(5, 5, 15, 0.95);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s;
-        }
-
-        #lang-overlay.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .lang-panel {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 3rem;
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            text-align: center;
-        }
-
-        .lang-panel h2 {
-            margin-bottom: 2rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            color: #fff;
-        }
-
-        .lang-buttons {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .lang-btn {
-            padding: 1rem 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-weight: 600;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .lang-btn:hover {
-            background: #ffffff;
-            color: #000000;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255,255,255,0.1);
-        }
-
-        /* --- Space & Planets Background --- */
-        .space-container {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .planet {
-            position: absolute;
-            border-radius: 50%;
-            animation: float 8s ease-in-out infinite alternate;
-        }
-
-        .planet-1 {
-            width: 300px;
-            height: 300px;
-            background: var(--planet-1);
-            top: 15%;
-            right: -50px;
-            box-shadow: 0 0 60px rgba(99, 102, 241, 0.2);
-            animation-duration: 12s;
-        }
-
-        .planet-2 {
-            width: 150px;
-            height: 150px;
-            background: var(--planet-2);
-            bottom: 20%;
-            left: -30px;
-            box-shadow: 0 0 40px rgba(236, 72, 153, 0.15);
-            animation-duration: 9s;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            100% { transform: translateY(25px) rotate(10deg); }
-        }
-
-        /* --- Liquidglass Navbar --- */
-        .navbar {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 1200px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 var(--glass-shadow);
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-        }
-
-        .logo {
-            font-weight: 800;
-            font-size: 1.5rem;
-            letter-spacing: 1px;
-            background: linear-gradient(45deg, var(--accent-color), #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .theme-switch {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            cursor: pointer;
-            font-size: 1.2rem;
-            padding: 8px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* --- Hero Section --- */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 1rem;
-            position: relative;
-        }
-
-        .hero-title h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            letter-spacing: -1px;
-        }
-
-        .hero-title p {
-            font-size: 1.5rem;
-            font-weight: 300;
-            opacity: 0.9;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 0.9rem;
-            opacity: 0.6;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
-
-        /* --- Projects Section --- */
-        .main-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .main-content.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2.5rem;
-            margin-top: 2rem;
-        }
-
-        /* --- Liquidglass Cards --- */
-        .project-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 var(--glass-shadow);
-            border-radius: 24px;
-            padding: 2.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 380px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
-            pointer-events: none;
-        }
-
-        .project-card h3 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .project-card p {
-            font-size: 1rem;
-            line-height: 1.6;
-            opacity: 0.8;
-            margin-bottom: 2rem;
-            font-weight: 400;
-        }
-
-        .card-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: auto;
-        }
-
-        .btn {
-            padding: 0.8rem 1.5rem;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-git {
-            background: #24292e;
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .btn-git:hover { background: #33393f; transform: translateY(-2px); }
-
-        .btn-tg {
-            background: #229ED9;
-            color: #fff;
-        }
-        .btn-tg:hover { background: #28a9e6; transform: translateY(-2px); }
-
-        .btn-bot {
-            background: rgba(99, 102, 241, 0.2);
-            color: var(--text-color);
-            border: 1px solid var(--accent-color);
-        }
-        .btn-bot:hover { background: var(--accent-color); color: #fff; transform: translateY(-2px); }
-
-        @media (max-width: 768px) {
-            .hero-title h1 { font-size: 2.5rem; }
-            .hero-title p { font-size: 1.1rem; }
-            .projects-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="scroll-locked">
 
-    <!-- Language Selector Modal -->
     <div id="lang-overlay">
         <div class="lang-panel">
             <h2>SELECT LANGUAGE / ВЫБЕРИТЕ ЯЗЫК</h2>
@@ -357,13 +22,13 @@
         </div>
     </div>
 
-    <!-- Animated Space Background -->
     <div class="space-container">
-        <div class="planet planet-1"></div>
-        <div class="planet planet-2"></div>
+        <div class="stars"></div>
+        <div class="stars2"></div>
+        <div class="planet planet-primary"></div>
+        <div class="planet planet-secondary"></div>
     </div>
 
-    <!-- Top Navigation Panel -->
     <nav class="navbar">
         <div class="logo">FlareSpace</div>
         <button class="theme-switch" onclick="toggleTheme()" id="theme-btn" aria-label="Toggle Theme">
@@ -371,69 +36,71 @@
         </button>
     </nav>
 
-    <!-- Hero Header Context -->
     <header class="hero" id="hero-section">
-        <div class="hero-title" id="hero-text">
-            <h1 data-key="hero-title">FlareSpace</h1>
-            <p data-key="hero-subtitle">Many convenient and useful tools.</p>
+        <div class="hero-content" id="hero-text">
+            <h1 class="beautiful-font">FlareSpace</h1>
+            <p class="subtitle" data-key="hero-subtitle">Many convenient and useful tools.</p>
         </div>
         <div class="scroll-indicator" id="scroll-hint">
             <span data-key="scroll-text">Scroll Down</span>
-            <i class="fa-solid fa-chevron-down" style="margin-top: 8px;"></i>
+            <div class="mouse-scroll-animation"></div>
         </div>
     </header>
 
-    <!-- Projects Grid Section -->
     <main class="main-content" id="projects-section">
-        <div class="projects-grid">
+        <div class="projects-list">
             
-            <!-- Project 1: FlareVPN -->
-            <div class="project-card">
-                <div>
-                    <h3><i class="fa-solid fa-shield-halved" style="color: var(--accent-color)"></i> FlareVpn</h3>
+            <section class="project-card">
+                <div class="card-body">
+                    <h3><i class="fa-solid fa-shield-halved card-icon-vpn"></i> FlareVpn</h3>
                     <p data-key="vpn-desc">A highly secure, fast, and completely anonymous premium VPN service designed to keep your connection protected and digital footprints clean.</p>
                 </div>
                 <div class="card-links">
-                    <a href="https://github.com" target="_blank" class="btn btn-git"><i class="fa-brands fa-github"></i> GitHub</a>
-                    <a href="https://t.me" target="_blank" class="btn btn-tg"><i class="fa-brands fa-telegram"></i> Telegram Channel</a>
+                    <a href="https://github.com" target="_blank" class="btn btn-git">
+                        <i class="fa-brands fa-github"></i> <span>Repository</span>
+                    </a>
+                    <a href="https://t.me" target="_blank" class="btn btn-tg">
+                        <i class="fa-brands fa-telegram"></i> <span>Telegram Channel</span>
+                    </a>
                 </div>
-            </div>
+            </section>
 
-            <!-- Project 2: FlareFind -->
-            <div class="project-card">
-                <div>
-                    <h3><i class="fa-solid fa-magnifying-glass" style="color: #ec4899"></i> FlareFind</h3>
+            <section class="project-card">
+                <div class="card-body">
+                    <h3><i class="fa-solid fa-magnifying-glass card-icon-find"></i> FlareFind</h3>
                     <p data-key="find-desc">FlareFind is a search engine for beautiful telegram usernames.</p>
                 </div>
                 <div class="card-links">
-                    <a href="https://t.me/FlareFind" target="_blank" class="btn btn-tg"><i class="fa-brands fa-telegram"></i> @FlareFind</a>
-                    <a href="https://t.me/FlareFindBot" target="_blank" class="btn btn-bot"><i class="fa-solid fa-robot"></i> @FlareFindBot</a>
+                    <a href="https://t.me/FlareFind" target="_blank" class="btn btn-tg">
+                        <i class="fa-brands fa-telegram"></i> <span>@FlareFind</span>
+                    </a>
+                    <a href="https://t.me/FlareFindBot" target="_blank" class="btn btn-bot">
+                        <i class="fa-solid fa-robot"></i> <span>@FlareFindBot</span>
+                    </a>
                 </div>
-            </div>
+            </section>
 
         </div>
     </main>
 
     <script>
-        // Localization Resource Dictionary
+        // Словарь локализации (EN / RU)
         const translations = {
             en: {
-                "hero-title": "FlareSpace",
                 "hero-subtitle": "Many convenient and useful tools.",
                 "scroll-text": "Scroll Down",
                 "vpn-desc": "A highly secure, fast, and completely anonymous premium VPN service designed to keep your connection protected and digital footprints clean.",
                 "find-desc": "FlareFind is a search engine for beautiful telegram usernames."
             },
             ru: {
-                "hero-title": "FlareSpace",
                 "hero-subtitle": "Множество удобных и полезных инструментов.",
                 "scroll-text": "Листайте вниз",
-                "vpn-desc": "Высокоскоростной, безопасный и полностью анонимный VPN-сервис премиум-класса для защиты вашего соединения.",
+                "vpn-desc": "Высокоскоростной, безопасный и абсолютно анонимный VPN-сервис премиум-класса, созданный для надежной защиты вашего соединения.",
                 "find-desc": "FlareFind — это поисковая система для красивых юзернеймов в Telegram."
             }
         };
 
-        // Language Handling
+        // Логика выбора языка
         function selectLanguage(lang) {
             document.querySelectorAll('[data-key]').forEach(element => {
                 const key = element.getAttribute('data-key');
@@ -441,44 +108,43 @@
                     element.textContent = translations[lang][key];
                 }
             });
-            document.getElementById('lang-overlay').classList.add('hidden');
-            document.body.style.overflowY = 'auto'; // Re-enable scrolling after selection
+            const overlay = document.getElementById('lang-overlay');
+            overlay.classList.add('hidden');
+            document.body.classList.remove('scroll-locked');
         }
 
-        // Prevent scrolling while language screen is active
-        document.body.style.overflowY = 'hidden';
-
-        // Dark/Light Theme Switch
+        // Переключение тем оформления (Темная / Светлая)
         function toggleTheme() {
             const body = document.body;
-            const themeBtn = document.getElementById('theme-btn').querySelector('i');
+            const icon = document.getElementById('theme-btn').querySelector('i');
             body.classList.toggle('light-theme');
             
             if(body.classList.contains('light-theme')) {
-                themeBtn.className = 'fa-solid fa-sun';
+                icon.className = 'fa-solid fa-sun';
             } else {
-                themeBtn.className = 'fa-solid fa-moon';
+                icon.className = 'fa-solid fa-moon';
             }
         }
 
-        // Advanced Scroll Animations
+        // Динамический скролл: исчезновение текста и проявление карточек
         window.addEventListener('scroll', () => {
             const scrollPos = window.scrollY;
-            const windowHeight = window.innerHeight;
+            const vh = window.innerHeight;
+            
             const heroText = document.getElementById('hero-text');
             const scrollHint = document.getElementById('scroll-hint');
             const projectsSection = document.getElementById('projects-section');
 
-            // Fade out hero contents dynamically based on depth scrolled
-            let fadeRatio = 1 - (scrollPos / (windowHeight * 0.4));
-            fadeRatio = Math.max(0, Math.min(1, fadeRatio)); // Keep between 0 and 1
-            
-            heroText.style.opacity = fadeRatio;
-            heroText.style.transform = `translateY(${scrollPos * 0.3}px)`; // Parallax shift
-            scrollHint.style.opacity = fadeRatio;
+            // Рассчитываем прозрачность для контента Hero
+            let fadeProgress = 1 - (scrollPos / (vh * 0.45));
+            fadeProgress = Math.max(0, Math.min(1, fadeProgress));
 
-            // Trigger the project menu reveal when user reaches target threshold
-            if (scrollPos > windowHeight * 0.25) {
+            heroText.style.opacity = fadeProgress;
+            heroText.style.transform = `translateY(${scrollPos * 0.4}px)`; // Эффект параллакса
+            scrollHint.style.opacity = fadeProgress;
+
+            // Появление панелей с проектами при достижении порога скролла
+            if (scrollPos > vh * 0.2) {
                 projectsSection.classList.add('visible');
             } else {
                 projectsSection.classList.remove('visible');
