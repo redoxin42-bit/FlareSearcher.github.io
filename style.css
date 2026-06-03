@@ -1,35 +1,43 @@
 /* ==========================================================================
-   1. GLOBAL VARIABLES & THEMES (Liquid Glass System)
+   1. LIQUID GLASS SYSTEM & THEMES
    ========================================================================== */
 :root {
-    --bg-gradient: linear-gradient(135deg, #020208 0%, #050515 50%, #0a0a28 100%);
-    --glass-bg: rgba(10, 20, 40, 0.4);
-    --glass-blue: rgba(15, 32, 67, 0.65);
+    /* Темная тема (По умолчанию) */
+    --bg-gradient: linear-gradient(135deg, #020208 0%, #040410 50%, #08091a 100%);
+    --glass-panel: rgba(0, 0, 0, 0.45);      /* Черный прозрачный Liquidglass */
+    --glass-nav: rgba(0, 0, 0, 0.6);        /* Черная верхняя панель */
     --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-highlight: rgba(30, 144, 255, 0.25);
-    --glow-color: rgba(0, 191, 255, 0.4);
+    --glass-highlight: rgba(255, 255, 255, 0.05);
+    --glow-color: rgba(0, 191, 255, 0.3);
     --text-main: #f0f4f8;
     --text-muted: #8da2bb;
     --accent-color: #00bfff;
-    --blur-strength: 20px;
+    --blur-strength: 24px;
+    --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
 
-/* Альтернативная цветовая палитра (Кастомный спектр) */
-[data-theme="alt"] {
-    --glass-blue: rgba(40, 15, 67, 0.65);
-    --glass-highlight: rgba(186, 85, 211, 0.25);
-    --glow-color: rgba(218, 112, 214, 0.4);
-    --accent-color: #da70d6;
+[data-theme="light"] {
+    /* Светлая тема */
+    --bg-gradient: linear-gradient(135deg, #cfd9df 0%, #e2ebf0 50%, #f5f7fa 100%);
+    --glass-panel: rgba(255, 255, 255, 0.4); /* Белый прозрачный Liquidglass */
+    --glass-nav: rgba(255, 255, 255, 0.55);   /* Белая верхняя панель */
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --glass-highlight: rgba(255, 255, 255, 0.4);
+    --glow-color: rgba(2, 132, 199, 0.15);
+    --text-main: #0f172a;
+    --text-muted: #475569;
+    --accent-color: #0284c7;
+    --card-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
 }
 
 /* ==========================================================================
-   2. BASE STYLES & RESET
+   2. BASE & CANVAS RESET
    ========================================================================== */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -40,9 +48,9 @@ body, html {
     color: var(--text-main);
     overflow-x: hidden;
     scroll-behavior: smooth;
+    transition: background 0.5s ease;
 }
 
-/* Фон с интерактивным космосом */
 #space-canvas {
     position: fixed;
     top: 0;
@@ -53,15 +61,15 @@ body, html {
     pointer-events: none;
 }
 
-/* Общий класс для эффекта Liquid Glass */
+/* Эффект Liquid Glass */
 .liquid-glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(var(--blur-strength)) saturate(160%);
-    -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(160%);
+    background: var(--glass-panel);
+    backdrop-filter: blur(var(--blur-strength)) saturate(170%);
+    -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(170%);
     border: 1px solid var(--glass-border);
     border-radius: 24px;
-    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: var(--card-shadow), inset 0 1px 1px var(--glass-highlight);
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* ==========================================================================
@@ -73,7 +81,7 @@ body, html {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(2, 2, 8, 0.85);
+    background: rgba(2, 2, 8, 0.9);
     z-index: 9999;
     display: flex;
     justify-content: center;
@@ -84,25 +92,21 @@ body, html {
 #lang-overlay.fade-out {
     opacity: 0;
     pointer-events: none;
-    transform: scale(1.05);
+    transform: scale(1.02);
 }
 
 .lang-panel {
-    padding: 40px 60px;
+    padding: 50px;
     text-align: center;
     max-width: 450px;
     width: 90%;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.05);
 }
 
 .lang-panel h2 {
-    margin-bottom: 25px;
-    font-size: 1.8rem;
-    letter-spacing: 1px;
-    background: linear-gradient(120deg, #fff, var(--text-muted));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    margin-bottom: 30px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #fff;
 }
 
 .lang-buttons {
@@ -112,21 +116,20 @@ body, html {
 }
 
 .lang-btn {
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
     color: #fff;
-    padding: 14px 32px;
-    font-size: 1.1rem;
+    padding: 14px 35px;
+    font-size: 1rem;
     font-weight: 600;
-    border-radius: 14px;
+    border-radius: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .lang-btn:hover {
-    background: var(--glass-highlight);
-    border-color: var(--accent-color);
-    box-shadow: 0 0 15px var(--glow-color);
+    background: #fff;
+    color: #000;
     transform: translateY(-2px);
 }
 
@@ -135,39 +138,33 @@ body, html {
    ========================================================================== */
 .upper-morph-panel {
     position: fixed;
-    top: 20px;
+    top: 24px;
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
     max-width: 1200px;
-    height: 70px;
-    padding: 0 30px;
+    height: 74px;
+    padding: 0 35px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 1000;
-    background: var(--glass-blue);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), 
-                inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                0 0 20px var(--glass-highlight);
-    border-radius: 20px;
+    background: var(--glass-nav);
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
 }
 
 .logo {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 800;
-    letter-spacing: 1.5px;
-    background: linear-gradient(135deg, #ffffff 0%, var(--accent-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 10px var(--glow-color);
+    letter-spacing: 1px;
+    color: var(--text-main);
 }
 
 .nav-controls {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
 }
 
 .control-btn {
@@ -175,8 +172,8 @@ body, html {
     border: none;
     color: var(--text-main);
     cursor: pointer;
-    padding: 8px;
-    border-radius: 50%;
+    padding: 10px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -184,7 +181,7 @@ body, html {
 }
 
 .control-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--glass-highlight);
     color: var(--accent-color);
 }
 
@@ -195,7 +192,7 @@ body, html {
 }
 
 /* ==========================================================================
-   5. HERO / INTRO SECTION
+   5. HERO CORE VIEW
    ========================================================================== */
 .hero-section {
     min-height: 100vh;
@@ -210,45 +207,38 @@ body, html {
 
 .hero-text-container {
     max-width: 800px;
-    transition: opacity 0.2s linear, transform 0.2s linear;
     will-change: opacity, transform;
 }
 
 .hero-title {
-    font-size: 4rem;
+    font-size: 4.5rem;
     font-weight: 900;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     letter-spacing: -1px;
-    line-height: 1.1;
 }
 
 .hero-subtitle {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: var(--text-muted);
     line-height: 1.6;
-    font-weight: 400;
 }
 
-/* Индикатор скролла (мышка) */
+/* Чистая анимация мыши (Текст убран) */
 .scroll-indicator {
     position: absolute;
-    bottom: 40px;
+    bottom: 50px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 10px;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    letter-spacing: 2px;
-    animation: pulse 2s infinite;
+    justify-content: center;
 }
 
 .scroll-mouse {
     width: 26px;
-    height: 42px;
+    height: 44px;
     border: 2px solid var(--text-muted);
     border-radius: 15px;
     position: relative;
+    opacity: 0.7;
 }
 
 .scroll-wheel {
@@ -264,104 +254,93 @@ body, html {
 }
 
 /* ==========================================================================
-   6. MAIN PROJECTS CONTAINER & CARDS
+   6. PROJECTS ALIGNED GRID
    ========================================================================== */
 .main-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px 100px 20px;
+    padding: 0 20px 140px 20px;
 }
 
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    grid-template-columns: repeat(2, 1fr); /* Идеальное симметричное выравнивание */
     gap: 40px;
-    margin-top: 50px;
 }
 
 .project-card {
-    padding: 40px;
+    padding: 45px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 380px;
-    position: relative;
-    overflow: hidden;
-}
-
-.project-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
-    pointer-events: none;
+    min-height: 360px;
 }
 
 .project-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 191, 255, 0.1);
+    transform: translateY(-6px);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: var(--card-shadow), 0 0 30px var(--glow-color);
 }
 
 .project-header h3 {
-    font-size: 2.2rem;
-    margin-bottom: 15px;
+    font-size: 2rem;
+    margin-bottom: 20px;
     font-weight: 700;
-    background: linear-gradient(90deg, #fff, var(--accent-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--text-main);
 }
 
 .project-desc {
     color: var(--text-muted);
     line-height: 1.7;
-    font-size: 1.1rem;
-    margin-bottom: 30px;
+    font-size: 1.05rem;
+    margin-bottom: 35px;
 }
 
-/* Ссылки / Кнопки управления */
 .project-links {
     display: flex;
-    flex-wrap: wrap;
     gap: 15px;
 }
 
 .action-link {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
     padding: 12px 24px;
-    border-radius: 12px;
+    border-radius: 14px;
     text-decoration: none;
     font-weight: 600;
     font-size: 0.95rem;
     transition: all 0.3s ease;
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
     color: var(--text-main);
 }
 
+[data-theme="light"] .action-link {
+    background: rgba(0, 0, 0, 0.03);
+}
+
 .action-link.primary {
-    background: var(--glass-highlight);
-    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: #fff;
+    border: none;
+}
+
+[data-theme="light"] .action-link.primary {
+    color: #fff;
 }
 
 .action-link:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--glass-highlight);
     transform: translateY(-2px);
 }
 
 .action-link.primary:hover {
-    background: var(--accent-color);
-    color: #000;
-    box-shadow: 0 0 15px var(--glow-color);
+    opacity: 0.9;
+    box-shadow: 0 0 20px var(--glow-color);
 }
 
 /* ==========================================================================
-   7. ANIMATIONS & UTILITIES
+   7. UTILITIES & RESPONSIVE
    ========================================================================== */
 @keyframes scroll-anim {
     0% { opacity: 1; top: 8px; }
@@ -369,21 +348,14 @@ body, html {
     100% { opacity: 0; top: 24px; }
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 0.6; transform: translateY(0); }
-    50% { opacity: 1; transform: translateY(6px); }
-}
-
 .hidden-lang {
     display: none !important;
 }
 
-/* Адаптивность для мобильных устройств */
-@media (max-width: 768deg) {
+@media (max-width: 900deg) {
     .projects-grid {
-        grid-template-columns: 100%;
+        grid-template-columns: 100%; /* Перестроение в одну колонку на планшетах/мобильных */
     }
-    .hero-title { font-size: 2.5rem; }
-    .hero-subtitle { font-size: 1.2rem; }
-    .upper-morph-panel { width: 95%; padding: 0 15px; }
-}
+    .hero-title { font-size: 3rem; }
+    .upper-morph-panel { width: 95%; }
+   }
