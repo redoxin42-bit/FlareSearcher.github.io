@@ -16,9 +16,12 @@
         <div class="lang-panel">
             <h2>SELECT LANGUAGE / ВЫБЕРИТЕ ЯЗЫК</h2>
             <div class="lang-buttons">
-                <button class="lang-btn" onclick="selectLanguage('en')">English</button>
-                <button class="lang-btn" onclick="selectLanguage('ru')">Русский</button>
+                <button class="lang-btn" onclick="selectLanguage('en')">🇺🇸 English</button>
+                <button class="lang-btn" onclick="selectLanguage('ru')">🇷🇺 Русский</button>
             </div>
+        <!-- Animated balls -->
+        <div class="selection-ball ball-1"></div>
+        <div class="selection-ball ball-2"></div>
         </div>
     </div>
 
@@ -56,10 +59,10 @@
                     <p data-key="vpn-desc">A highly secure, fast, and completely anonymous premium VPN service designed to keep your connection protected and digital footprints clean.</p>
                 </div>
                 <div class="card-links">
-                    <a href="https://github.com" target="_blank" class="btn btn-git">
+                    <a href="https://github.com/FlareSpace/FlareVPN" target="_blank" class="btn btn-git">
                         <i class="fa-brands fa-github"></i> <span>Repository</span>
                     </a>
-                    <a href="https://t.me" target="_blank" class="btn btn-tg">
+                    <a href="https://t.me/FlareApp" target="_blank" class="btn btn-tg">
                         <i class="fa-brands fa-telegram"></i> <span>Telegram Channel</span>
                     </a>
                 </div>
@@ -108,9 +111,18 @@
                     element.textContent = translations[lang][key];
                 }
             });
+
             const overlay = document.getElementById('lang-overlay');
-            overlay.classList.add('hidden');
-            document.body.classList.remove('scroll-locked');
+            const panel = overlay.querySelector('.lang-panel');
+
+            // Trigger ball animation
+            panel.classList.add('animate-balls');
+
+            // Wait for animation before hiding overlay
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                document.body.classList.remove('scroll-locked');
+            }, 1000);
         }
 
         // Переключение тем оформления (Темная / Светлая)
