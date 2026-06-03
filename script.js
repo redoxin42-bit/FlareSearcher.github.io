@@ -1,7 +1,7 @@
-const canvas = document.getElementById('space');
+const canvas = document.getElementById('space-canvas');
 const ctx = canvas.getContext('2d');
 let stars = [];
-const numStars = 250;
+const numStars = 220;
 
 function resize() {
     canvas.width = window.innerWidth;
@@ -18,14 +18,14 @@ class Star {
     reset() {
         this.x = Math.random() * canvas.width;
         this.y = canvas.height;
-        this.size = Math.random() * 2 + 0.5;
-        this.speed = Math.random() * 0.5 + 0.05;
-        this.alpha = Math.random() * 0.8 + 0.2;
+        this.size = Math.random() * 2.2 + 0.4;
+        this.speed = Math.random() * 0.35 + 0.05;
+        this.alpha = Math.random() * 0.7 + 0.3;
         this.phase = Math.random() * Math.PI;
     }
     update() {
         this.y -= this.speed;
-        this.phase += 0.01;
+        this.phase += 0.007;
         if (this.y < 0) {
             this.reset();
         }
@@ -45,19 +45,6 @@ for (let i = 0; i < numStars; i++) {
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    let gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 10, canvas.width/2, canvas.height/2, canvas.width);
-    if(document.documentElement.getAttribute('data-theme') === 'light') {
-        gradient.addColorStop(0, '#1e1b4b');
-        gradient.addColorStop(0.5, '#0f172a');
-        gradient.addColorStop(1, '#020617');
-    } else {
-        gradient.addColorStop(0, '#070714');
-        gradient.addColorStop(1, '#010103');
-    }
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
     stars.forEach(star => {
         star.update();
         star.draw();
@@ -85,36 +72,37 @@ const langData = {
     }
 };
 
-function setLang(lang) {
-    document.getElementById('hero-text').innerText = langData[lang].hero;
-    document.getElementById('vpn-desc').innerText = langData[lang].vpnDesc;
-    document.getElementById('find-desc').innerText = langData[lang].findDesc;
-    document.getElementById('nav-settings').innerText = langData[lang].settings;
-    document.getElementById('vpn-gh').innerText = langData[lang].github;
-    document.getElementById('vpn-tg').innerText = langData[lang].tgChannel;
+function selectLanguage(lang) {
+    document.getElementById('hero-headline').innerText = langData[lang].hero;
+    document.getElementById('desc-vpn').innerText = langData[lang].vpnDesc;
+    document.getElementById('desc-find').innerText = langData[lang].findDesc;
+    document.getElementById('label-settings').innerText = langData[lang].settings;
+    document.getElementById('link-github').innerText = langData[lang].github;
+    document.getElementById('link-telegram').innerText = langData[lang].tgChannel;
     
-    const loader = document.getElementById('loader');
-    loader.style.opacity = '0';
-    loader.style.transform = 'translateY(-30px)';
-    setTimeout(() => loader.style.display = 'none', 800);
+    const preloader = document.getElementById('language-preloader');
+    preloader.style.opacity = '0';
+    preloader.style.transform = 'translateY(-40px) scale(0.98)';
+    setTimeout(() => preloader.style.display = 'none', 600);
 }
 
 window.addEventListener('scroll', () => {
     const scrolled = window.scrollY;
-    const heroText = document.getElementById('hero-text');
+    const headline = document.getElementById('hero-headline');
     
-    const opacity = Math.max(0, 1 - scrolled / 600);
-    const blur = Math.min(25, scrolled / 20);
-    const translate = scrolled * 0.5;
+    const opacity = Math.max(0, 1 - scrolled / 550);
+    const blurValue = Math.min(25, scrolled / 20);
+    const translation = scrolled * 0.45;
     
-    heroText.style.opacity = opacity;
-    heroText.style.filter = `blur(${blur}px)`;
-    heroText.style.transform = `translateY(${translate}px)`;
+    headline.style.opacity = opacity;
+    headline.style.filter = `blur(${blurValue}px)`;
+    headline.style.transform = `translateY(${translation}px)`;
 
-    const p1 = document.querySelector('.planet-1');
-    const p2 = document.querySelector('.planet-2');
-    p1.style.transform = `translateY(${scrolled * 0.15}px)`;
-    p2.style.transform = `translateY(${scrolled * -0.1}px)`;
+    const p1 = document.querySelector('.planet-main');
+    const p2 = document.querySelector('.planet-secondary');
+    
+    p1.style.transform = `translateY(${scrolled * 0.18}px)`;
+    p2.style.transform = `translateY(${scrolled * -0.15}px)`;
 });
 
 const observer = new IntersectionObserver((entries) => {
@@ -125,15 +113,15 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, { threshold: 0.12 });
 
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+document.querySelectorAll('.fade-trigger').forEach(el => observer.observe(el));
 
-function switchTheme(theme, btn) {
-    const buttons = btn.parentElement.querySelectorAll('.tab-btn');
+function setSpaceTheme(theme, btn) {
+    const buttons = btn.parentElement.querySelectorAll('.tab-item');
     buttons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    if (theme === 'light') {
-        document.documentElement.setAttribute('data-theme', 'light');
+    if (theme === 'eclipse') {
+        document.documentElement.setAttribute('data-theme', 'eclipse');
     } else {
         document.documentElement.removeAttribute('data-theme');
     }
