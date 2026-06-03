@@ -3,69 +3,563 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlareSpace</title>
-    <link rel="stylesheet" href="style.css">
+    <title>FlareSpace Hub</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #020208 0%, #050515 50%, #0a0a28 100%);
+            --glass-bg: rgba(10, 20, 40, 0.4);
+            --glass-blue: rgba(15, 32, 67, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(30, 144, 255, 0.25);
+            --glow-color: rgba(0, 191, 255, 0.4);
+            --text-main: #f0f4f8;
+            --text-muted: #8da2bb;
+            --accent-color: #00bfff;
+            --blur-strength: 20px;
+        }
+
+        [data-theme="alt"] {
+            --glass-blue: rgba(40, 15, 67, 0.65);
+            --glass-highlight: rgba(186, 85, 211, 0.25);
+            --glow-color: rgba(218, 112, 214, 0.4);
+            --accent-color: #da70d6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Background Canvas */
+        #space-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Shared Liquid Glass Utility */
+        .liquid-glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--blur-strength)) saturate(160%);
+            -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(160%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Language Overlay Screen */
+        #lang-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(2, 2, 8, 0.85);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        #lang-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.05);
+        }
+
+        .lang-panel {
+            padding: 40px 60px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .lang-panel h2 {
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            background: linear-gradient(120deg, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .lang-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn:hover {
+            background: var(--glass-highlight);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--glow-color);
+            transform: translateY(-2px);
+        }
+
+        /* Top Navigation Header Bar */
+        .upper-morph-panel {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            height: 70px;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: var(--glass-blue);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                        0 0 20px var(--glass-highlight);
+            border-radius: 20px;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .control-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--accent-color);
+        }
+
+        .control-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        /* Hero / Dynamic Intro Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero-text-container {
+            max-width: 800px;
+            transition: opacity 0.2s linear, transform 0.2s linear;
+            will-change: opacity, transform;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* Animated Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
+        }
+
+        .scroll-mouse {
+            width: 26px;
+            height: 42px;
+            border: 2px solid var(--text-muted);
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .scroll-wheel {
+            width: 4px;
+            height: 8px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scroll-anim 1.6s infinite;
+        }
+
+        /* Main Content Projects View */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 100px 20px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768deg) {
+            .projects-grid {
+                grid-template-columns: 100%;
+            }
+            .hero-title { font-size: 2.5rem; }
+            .hero-subtitle { font-size: 1.2rem; }
+        }
+
+        /* Large Project Cards */
+        .project-card {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 380px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 191, 255, 0.1);
+        }
+
+        .project-header h3 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #fff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .project-desc {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .project-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+        }
+
+        .action-link.primary {
+            background: var(--glass-highlight);
+            border-color: var(--accent-color);
+        }
+
+        .action-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .action-link.primary:hover {
+            background: var(--accent-color);
+            color: #000;
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+
+        /* Keyframe Animations */
+        @keyframes scroll-anim {
+            0% { opacity: 1; top: 8px; }
+            50% { opacity: 0.3; top: 24px; }
+            100% { opacity: 0; top: 24px; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(6px); }
+        }
+
+        .hidden-lang {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="space-container">
-        <canvas id="space-canvas"></canvas>
-        <div class="space-nebula"></div>
-        <div class="cosmic-body planet-main"></div>
-        <div class="cosmic-body planet-secondary"></div>
-    </div>
+    <canvas id="space-canvas"></canvas>
 
-    <div id="language-preloader" class="modal-overlay">
-        <div class="glass-card black-glass lang-card">
+    <div id="lang-overlay">
+        <div class="lang-panel liquid-glass">
             <h2>Select Language / Выберите язык</h2>
-            <div class="lang-options">
-                <button class="btn-premium" onclick="selectLanguage('en')">English</button>
-                <button class="btn-premium" onclick="selectLanguage('ru')">Русский</button>
+            <div class="lang-buttons">
+                <button class="lang-btn" onclick="setLanguage('en')">English</button>
+                <button class="lang-btn" onclick="setLanguage('ru')">Русский</button>
             </div>
         </div>
     </div>
 
-    <nav class="navbar black-glass">
+    <header class="upper-morph-panel">
         <div class="logo">FlareSpace</div>
-        <div class="nav-actions">
-            <span id="label-settings">Settings</span>
-            <div class="tab-switcher">
-                <div class="tab-indicator"></div>
-                <button class="tab-item active" onclick="setSpaceTheme('nebula', this)">Nebula</button>
-                <button class="tab-item" onclick="setSpaceTheme('eclipse', this)">Eclipse</button>
+        <div class="nav-controls">
+            <button class="control-btn" title="Settings" onclick="alert('Settings panel active.')">
+                <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+            </button>
+            <button class="control-btn" title="Toggle Aesthetic Spectrum" onclick="toggleTheme()">
+                <svg viewBox="0 0 24 24"><path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26 c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-text-container" id="hero-text">
+            <h1 class="hero-title">FlareSpace</h1>
+            <p class="hero-subtitle lang-en">Various stars of space, similar to various FlareSpace projects.</p>
+            <p class="hero-subtitle lang-ru hidden-lang">Различные звезды космоса, подобные различным проектам FlareSpace.</p>
+        </div>
+
+        <div class="scroll-indicator">
+            <span class="lang-en">Scroll Down</span>
+            <span class="lang-ru hidden-lang">Листайте вниз</span>
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <main class="content">
-        <section class="hero-view">
-            <h1 id="hero-headline">FlareSpace - Various stars of space, similar to various FlareSpace projects.</h1>
-            <div class="animated-scroll-down">
-                <div class="scroll-dot"></div>
-            </div>
-        </section>
-
-        <section class="projects-grid">
-            <div class="project-node liquid-glass fade-trigger">
-                <h2>FlareVpn</h2>
-                <p id="desc-vpn">Fast and secure VPN adapter for ultimate privacy.</p>
-                <div class="action-links">
-                    <a href="https://github.com" target="_blank" id="link-github">GitHub</a>
-                    <a href="https://t.me" target="_blank" id="link-telegram">Telegram Channel</a>
+    <main class="main-container">
+        <div class="projects-grid">
+            
+            <div class="project-card liquid-glass">
+                <div class="project-header">
+                    <h3>FlareVpn</h3>
+                    <p class="project-desc lang-en">A secure high-performance proxy network engine adapting next-generation protocols for absolute cross-platform security.</p>
+                    <p class="project-desc lang-ru hidden-lang">Высокопроизводительный безопасный прокси-движок, адаптирующий протоколы нового поколения для абсолютной кроссплатформенной безопасности.</p>
+                </div>
+                <div class="project-links">
+                    <a href="https://github.com" target="_blank" class="action-link primary">GitHub Repository</a>
+                    <a href="https://t.me/FlareApp" target="_blank" class="action-link">Telegram Channel (@FlareApp)</a>
                 </div>
             </div>
 
-            <div class="project-node liquid-glass fade-trigger">
-                <h2>FlareFind</h2>
-                <p id="desc-find">Advanced bot to search for rare and unique usernames.</p>
-                <div class="action-links">
-                    <a href="https://t.me/FlareFind" target="_blank">@FlareFind</a>
-                    <a href="https://t.me/FlareFindBot" target="_blank">@FlareFindBot</a>
+            <div class="project-card liquid-glass">
+                <div class="project-header">
+                    <h3>FlareFind</h3>
+                    <p class="project-desc lang-en">Advanced automated OSINT utility indexing and tracking beautiful elite vanity usernames inside the Telegram environment.</p>
+                    <p class="project-desc lang-ru hidden-lang">Продвинутая автоматизированная OSINT-утилита для индексации и мониторинга редких, красивых юзернеймов в экосистеме Telegram.</p>
+                </div>
+                <div class="project-links">
+                    <a href="https://t.me/FlareFindBot" target="_blank" class="action-link primary">Launch Bot (@FlareFindBot)</a>
+                    <a href="https://t.me/FlareFind" target="_blank" class="action-link">Community (@FlareFind)</a>
                 </div>
             </div>
-        </section>
+
+        </div>
     </main>
 
-    <script src="script.js"></script>
+    <script>
+        // Starfield Particle Engine Engine Implementation
+        const canvas = document.getElementById('space-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let stars = [];
+        const numStars = 160;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initStars();
+        }
+
+        class Star {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = (Math.random() - 0.5) * 0.25;
+                this.speedY = (Math.random() - 0.5) * 0.25;
+                this.brightness = Math.random();
+                this.fadeSpeed = 0.005 + Math.random() * 0.01;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Border wrap loop
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+
+                // Shimmer cycling
+                this.brightness += this.fadeSpeed;
+                if (this.brightness > 1 || this.brightness < 0.2) {
+                    this.fadeSpeed = -this.fadeSpeed;
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(240, 244, 248, ${this.brightness})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < numStars; i++) {
+                stars.push(new Star());
+            }
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            requestAnimationFrame(animateStars);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        animateStars();
+
+        // Multilingual Localization Context System
+        function setLanguage(lang) {
+            const overlay = document.getElementById('lang-overlay');
+            overlay.classList.add('fade-out');
+
+            if (lang === 'ru') {
+                document.querySelectorAll('.lang-en').forEach(el => el.classList.add('hidden-lang'));
+                document.querySelectorAll('.lang-ru').forEach(el => el.classList.remove('hidden-lang'));
+            } else {
+                document.querySelectorAll('.lang-ru').forEach(el => el.classList.add('hidden-lang'));
+                document.querySelectorAll('.lang-en').forEach(el => el.classList.remove('hidden-lang'));
+            }
+        }
+
+        // Color Spectrum/Theme Inversion Control
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            if (currentTheme === 'alt') {
+                body.removeAttribute('data-theme');
+            } else {
+                body.setAttribute('data-theme', 'alt');
+            }
+        }
+
+        // Mathematical Scroll Fade and Scaling Interpolations
+        const heroText = document.getElementById('hero-text');
+        window.addEventListener('scroll', () => {
+            let scrollVal = window.scrollY;
+            let fadeBreakpoint = window.innerHeight * 0.65;
+            
+            if (scrollVal <= fadeBreakpoint) {
+                let calcOpacity = 1 - (scrollVal / fadeBreakpoint);
+                let calcTransform = scrollVal * 0.12;
+                
+                heroText.style.opacity = calcOpacity;
+                heroText.style.transform = `translateY(${calcTransform}px)`;
+            } else {
+                heroText.style.opacity = 0;
+            }
+        });
+    </script>
 </body>
 </html>
