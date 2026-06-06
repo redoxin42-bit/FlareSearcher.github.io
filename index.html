@@ -25,21 +25,27 @@
     <div class="space-container">
         <div class="stars"></div>
         <div class="stars2"></div>
+        <div class="stars3"></div>
         <div class="planet planet-primary"></div>
         <div class="planet planet-secondary"></div>
     </div>
 
     <nav class="navbar">
         <div class="logo">FlareSpace</div>
-        <button class="theme-switch" onclick="toggleTheme()" id="theme-btn" aria-label="Toggle Theme">
-            <i class="fa-solid fa-moon"></i>
-        </button>
+        <div class="nav-controls">
+            <button class="settings-btn" aria-label="Settings" onclick="toggleSettings()">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+            <button class="theme-switch" onclick="toggleTheme()" id="theme-btn" aria-label="Toggle Theme">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
     </nav>
 
     <header class="hero" id="hero-section">
         <div class="hero-content" id="hero-text">
             <h1 class="beautiful-font">FlareSpace</h1>
-            <p class="subtitle" data-key="hero-subtitle">Many convenient and useful tools.</p>
+            <p class="subtitle" data-key="hero-subtitle">FlareSpace - Various stars of space, similar to various FlareSpace projects.</p>
         </div>
         <div class="scroll-indicator" id="scroll-hint">
             <span data-key="scroll-text">Scroll Down</span>
@@ -57,10 +63,10 @@
                 </div>
                 <div class="card-links">
                     <a href="https://github.com" target="_blank" class="btn btn-git">
-                        <i class="fa-brands fa-github"></i> <span>Repository</span>
+                        <i class="fa-brands fa-github"></i> <span data-key="repo">Repository</span>
                     </a>
-                    <a href="https://t.me" target="_blank" class="btn btn-tg">
-                        <i class="fa-brands fa-telegram"></i> <span>Telegram Channel</span>
+                    <a href="https://t.me/FlareApp" target="_blank" class="btn btn-tg">
+                        <i class="fa-brands fa-telegram"></i> <span data-key="channel">Telegram Channel</span>
                     </a>
                 </div>
             </section>
@@ -68,7 +74,7 @@
             <section class="project-card">
                 <div class="card-body">
                     <h3><i class="fa-solid fa-magnifying-glass card-icon-find"></i> FlareFind</h3>
-                    <p data-key="find-desc">FlareFind is a search engine for beautiful telegram usernames.</p>
+                    <p data-key="find-desc">FlareFind is a search bot for finding beautiful Telegram usernames.</p>
                 </div>
                 <div class="card-links">
                     <a href="https://t.me/FlareFind" target="_blank" class="btn btn-tg">
@@ -83,20 +89,38 @@
         </div>
     </main>
 
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content glass-panel">
+            <h3 data-key="settings-title">Settings</h3>
+            <p data-key="settings-info">Customization options coming soon.</p>
+            <button class="btn btn-git" onclick="toggleSettings()" data-key="close">Close</button>
+        </div>
+    </div>
+
     <script>
         // Словарь локализации (EN / RU)
         const translations = {
             en: {
-                "hero-subtitle": "Many convenient and useful tools.",
+                "hero-subtitle": "FlareSpace - Various stars of space, similar to various FlareSpace projects.",
                 "scroll-text": "Scroll Down",
                 "vpn-desc": "A highly secure, fast, and completely anonymous premium VPN service designed to keep your connection protected and digital footprints clean.",
-                "find-desc": "FlareFind is a search engine for beautiful telegram usernames."
+                "find-desc": "FlareFind is a search bot for finding beautiful Telegram usernames.",
+                "repo": "Repository",
+                "channel": "Telegram Channel",
+                "settings-title": "Settings",
+                "settings-info": "Customization options coming soon.",
+                "close": "Close"
             },
             ru: {
-                "hero-subtitle": "Множество удобных и полезных инструментов.",
+                "hero-subtitle": "FlareSpace — различные звезды космоса, подобные различным проектам FlareSpace.",
                 "scroll-text": "Листайте вниз",
                 "vpn-desc": "Высокоскоростной, безопасный и абсолютно анонимный VPN-сервис премиум-класса, созданный для надежной защиты вашего соединения.",
-                "find-desc": "FlareFind — это поисковая система для красивых юзернеймов в Telegram."
+                "find-desc": "FlareFind — это поисковый бот для поиска красивых юзернеймов в Telegram.",
+                "repo": "Репозиторий",
+                "channel": "Телеграм Канал",
+                "settings-title": "Настройки",
+                "settings-info": "Опции персонализации скоро появятся.",
+                "close": "Закрыть"
             }
         };
 
@@ -111,6 +135,12 @@
             const overlay = document.getElementById('lang-overlay');
             overlay.classList.add('hidden');
             document.body.classList.remove('scroll-locked');
+        }
+
+        // Открытие/Закрытие настроек
+        function toggleSettings() {
+            const modal = document.getElementById('settings-modal');
+            modal.classList.toggle('hidden');
         }
 
         // Переключение тем оформления (Темная / Светлая)
@@ -149,6 +179,23 @@
             } else {
                 projectsSection.classList.remove('visible');
             }
+        });
+
+        // Intersection Observer для плавного проявления карточек
+        const observerOptions = {
+            threshold: 0.15
+        };
+
+        const projectObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.project-card').forEach(card => {
+            projectObserver.observe(card);
         });
     </script>
 </body>
