@@ -7,11 +7,12 @@
     --text-muted: rgba(255, 255, 255, 0.7);
     
     /* Эффект Liquidglass (Dark Mode) с глубоким размытием и голубоватым оттенком */
-    --glass-bg: rgba(10, 12, 32, 0.5);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-blur: blur(25px);
-    --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 
-                    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    --glass-bg: rgba(15, 20, 50, 0.45);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-blur: blur(30px);
+    --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
+                    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+                    inset 0 -1px 1px rgba(0, 0, 0, 0.1);
     
     --accent-color: #6366f1;
     --planet-left: radial-gradient(circle at 30% 30%, #3b82f6, #061f4d, #000);
@@ -67,7 +68,7 @@ body.scroll-locked {
 #lang-overlay {
     position: fixed;
     inset: 0;
-    background: #020206;
+    background: radial-gradient(circle at center, #0a0c20 0%, #020206 100%);
     z-index: 1000;
     display: flex;
     justify-content: center;
@@ -81,13 +82,13 @@ body.scroll-locked {
 }
 
 .lang-panel {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     padding: 3.5rem;
     border-radius: 28px;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+    box-shadow: var(--glass-shadow);
     text-align: center;
     max-width: 90%;
     width: 500px;
@@ -139,24 +140,55 @@ body.scroll-locked {
 }
 
 .stars {
+    width: 1px;
+    height: 1px;
+    background: transparent;
+    box-shadow: 10vw 20vh var(--star-color), 25vw 35vh var(--star-color), 40vw 10vh var(--star-color),
+                60vw 80vh var(--star-color), 80vw 25vh var(--star-color), 95vw 55vh var(--star-color),
+                15vw 85vh var(--star-color), 50vw 45vh var(--star-color), 70vw 15vh var(--star-color),
+                35vw 65vh var(--star-color);
+    animation: starsLayer1 100s infinite alternate;
+}
+
+.stars2 {
     width: 2px;
     height: 2px;
     background: transparent;
-    box-shadow: 93vw 12vh var(--star-color), 15vw 45vh var(--star-color), 55vw 85vh var(--star-color), 
-                34vw 22vh var(--star-color), 75vw 63vh var(--star-color), 10vw 88vh var(--star-color), 
-                42vw 51vh var(--star-color), 88vw 31vh var(--star-color), 64vw 15vh var(--star-color);
-    animation: pulseStars 6s infinite alternate;
+    box-shadow: 15vw 15vh var(--star-color), 35vw 45vh var(--star-color), 55vw 25vh var(--star-color),
+                75vw 65vh var(--star-color), 90vw 85vh var(--star-color), 5vw 60vh var(--star-color),
+                45vw 80vh var(--star-color), 65vw 40vh var(--star-color), 85vw 10vh var(--star-color);
+    animation: starsLayer2 150s infinite alternate;
 }
 
-@keyframes pulseStars {
-    0% { opacity: 0.3; }
-    100% { opacity: 0.9; }
+.stars3 {
+    width: 3px;
+    height: 3px;
+    background: transparent;
+    box-shadow: 20vw 80vh var(--star-color), 40vw 20vh var(--star-color), 60vw 50vh var(--star-color),
+                80vw 90vh var(--star-color), 10vw 40vh var(--star-color), 30vw 70vh var(--star-color),
+                50vw 10vh var(--star-color), 70vw 30vh var(--star-color), 90vw 60vh var(--star-color);
+    animation: starsLayer3 200s infinite alternate;
+}
+
+@keyframes starsLayer1 {
+    0% { opacity: 0.2; transform: scale(0.8) translateY(0); }
+    100% { opacity: 0.8; transform: scale(1.1) translateY(-20px); }
+}
+
+@keyframes starsLayer2 {
+    0% { opacity: 0.3; transform: scale(0.8) translateY(0); }
+    100% { opacity: 0.9; transform: scale(1.1) translateY(-40px); }
+}
+
+@keyframes starsLayer3 {
+    0% { opacity: 0.4; transform: scale(0.8) translateY(0); }
+    100% { opacity: 1; transform: scale(1.1) translateY(-60px); }
 }
 
 .planet {
     position: absolute;
     border-radius: 50%;
-    animation: floatPlanet 12s ease-in-out infinite alternate;
+    animation: floatPlanet 15s ease-in-out infinite alternate;
 }
 
 .planet-primary {
@@ -182,7 +214,7 @@ body.scroll-locked {
 
 @keyframes floatPlanet {
     0% { transform: translateY(0) rotate(0deg); }
-    100% { transform: translateY(35px) rotate(6deg); }
+    100% { transform: translateY(20px) rotate(4deg); }
 }
 
 /* ==========================================================================
@@ -200,12 +232,18 @@ body.scroll-locked {
     -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
-    padding: 1.1rem 2.5rem;
+    padding: 0.8rem 2rem;
     border-radius: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 90;
+}
+
+.nav-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 .logo {
@@ -217,7 +255,7 @@ body.scroll-locked {
     -webkit-text-fill-color: transparent;
 }
 
-.theme-switch {
+.theme-switch, .settings-btn {
     background: transparent;
     border: none;
     color: var(--text-primary);
@@ -229,10 +267,12 @@ body.scroll-locked {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
 }
 
-.theme-switch:hover {
-    background: rgba(255, 255, 255, 0.08);
+.theme-switch:hover, .settings-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
 }
 
 /* ==========================================================================
@@ -250,7 +290,7 @@ body.scroll-locked {
 }
 
 .hero-content {
-    will-change: transform, opacity;
+    will-change: transform, opacity, filter;
 }
 
 .beautiful-font {
@@ -281,6 +321,13 @@ body.scroll-locked {
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--text-muted);
+    animation: bounceIndicator 2s infinite ease-in-out;
+}
+
+@keyframes bounceIndicator {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
 }
 
 .mouse-scroll-animation {
@@ -318,15 +365,15 @@ body.scroll-locked {
     margin: 0 auto;
     padding: 0 1.5rem 8rem 1.5rem;
     opacity: 0;
-    transform: translateY(60px);
-    transition: opacity 0.8s cubic-bezier(0.215, 0.610, 0.355, 1), 
-                transform 0.8s cubic-bezier(0.215, 0.610, 0.355, 1);
+    transform: translateY(100px) scale(0.95);
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Проявление блока при скролле */
 .main-content.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
 .projects-list {
