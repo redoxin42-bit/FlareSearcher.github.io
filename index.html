@@ -25,15 +25,21 @@
     <div class="space-container">
         <div class="stars"></div>
         <div class="stars2"></div>
+        <div class="stars3"></div>
         <div class="planet planet-primary"></div>
         <div class="planet planet-secondary"></div>
     </div>
 
     <nav class="navbar">
         <div class="logo">FlareSpace</div>
-        <button class="theme-switch" onclick="toggleTheme()" id="theme-btn" aria-label="Toggle Theme">
-            <i class="fa-solid fa-moon"></i>
-        </button>
+        <div class="nav-controls">
+            <button class="theme-switch settings-btn" aria-label="Settings">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+            <button class="theme-switch" onclick="toggleTheme()" id="theme-btn" aria-label="Toggle Theme">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
     </nav>
 
     <header class="hero" id="hero-section">
@@ -59,8 +65,8 @@
                     <a href="https://github.com" target="_blank" class="btn btn-git">
                         <i class="fa-brands fa-github"></i> <span>Repository</span>
                     </a>
-                    <a href="https://t.me" target="_blank" class="btn btn-tg">
-                        <i class="fa-brands fa-telegram"></i> <span>Telegram Channel</span>
+                    <a href="https://t.me/FlareApp" target="_blank" class="btn btn-tg">
+                        <i class="fa-brands fa-telegram"></i> <span>FlareApp</span>
                     </a>
                 </div>
             </section>
@@ -87,16 +93,16 @@
         // Словарь локализации (EN / RU)
         const translations = {
             en: {
-                "hero-subtitle": "Many convenient and useful tools.",
+                "hero-subtitle": "FlareSpace - Various stars of space, similar to various FlareSpace projects.",
                 "scroll-text": "Scroll Down",
                 "vpn-desc": "A highly secure, fast, and completely anonymous premium VPN service designed to keep your connection protected and digital footprints clean.",
-                "find-desc": "FlareFind is a search engine for beautiful telegram usernames."
+                "find-desc": "FlareFind is a search bot that searches for a beautiful username in telegram."
             },
             ru: {
-                "hero-subtitle": "Множество удобных и полезных инструментов.",
+                "hero-subtitle": "FlareSpace - Разнообразные звезды космоса, подобные различным проектам FlareSpace.",
                 "scroll-text": "Листайте вниз",
                 "vpn-desc": "Высокоскоростной, безопасный и абсолютно анонимный VPN-сервис премиум-класса, созданный для надежной защиты вашего соединения.",
-                "find-desc": "FlareFind — это поисковая система для красивых юзернеймов в Telegram."
+                "find-desc": "FlareFind — это бот для поиска красивых юзернеймов в Telegram."
             }
         };
 
@@ -140,8 +146,10 @@
             fadeProgress = Math.max(0, Math.min(1, fadeProgress));
 
             heroText.style.opacity = fadeProgress;
-            heroText.style.transform = `translateY(${scrollPos * 0.4}px)`; // Эффект параллакса
+            heroText.style.filter = `blur(${(1 - fadeProgress) * 10}px)`;
+            heroText.style.transform = `translateY(${scrollPos * 0.4}px) scale(${1 + (1 - fadeProgress) * 0.1})`;
             scrollHint.style.opacity = fadeProgress;
+            scrollHint.style.transform = `translateY(${scrollPos * 0.2}px)`;
 
             // Появление панелей с проектами при достижении порога скролла
             if (scrollPos > vh * 0.2) {
