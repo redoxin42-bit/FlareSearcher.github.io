@@ -23,23 +23,27 @@
     </div>
 
     <div class="space-container">
-        <div class="stars"></div>
+        <div class="stars1"></div>
         <div class="stars2"></div>
+        <div class="stars3"></div>
         <div class="planet planet-primary"></div>
         <div class="planet planet-secondary"></div>
     </div>
 
     <nav class="navbar">
         <div class="logo">FlareSpace</div>
-        <button class="theme-switch" onclick="toggleTheme()" id="theme-btn" aria-label="Toggle Theme">
-            <i class="fa-solid fa-moon"></i>
-        </button>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <button class="nav-btn" data-key="nav_settings">Settings</button>
+            <button class="theme-switch" id="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
     </nav>
 
     <header class="hero" id="hero-section">
         <div class="hero-content" id="hero-text">
             <h1 class="beautiful-font">FlareSpace</h1>
-            <p class="subtitle" data-key="hero-subtitle">Many convenient and useful tools.</p>
+            <p class="subtitle" data-key="hero-subtitle">FlareSpace - Various stars of space, similar to various FlareSpace projects.</p>
         </div>
         <div class="scroll-indicator" id="scroll-hint">
             <span data-key="scroll-text">Scroll Down</span>
@@ -56,11 +60,11 @@
                     <p data-key="vpn-desc">A highly secure, fast, and completely anonymous premium VPN service designed to keep your connection protected and digital footprints clean.</p>
                 </div>
                 <div class="card-links">
-                    <a href="https://github.com" target="_blank" class="btn btn-git">
-                        <i class="fa-brands fa-github"></i> <span>Repository</span>
+                    <a href="https://github.com/flarevpn" target="_blank" class="btn btn-git">
+                        <i class="fa-brands fa-github"></i> <span data-key="btn-repo">Repository</span>
                     </a>
-                    <a href="https://t.me" target="_blank" class="btn btn-tg">
-                        <i class="fa-brands fa-telegram"></i> <span>Telegram Channel</span>
+                    <a href="https://t.me/FlareApp" target="_blank" class="btn btn-tg">
+                        <i class="fa-brands fa-telegram"></i> <span data-key="btn-channel">Telegram Channel (FlareApp)</span>
                     </a>
                 </div>
             </section>
@@ -68,7 +72,7 @@
             <section class="project-card">
                 <div class="card-body">
                     <h3><i class="fa-solid fa-magnifying-glass card-icon-find"></i> FlareFind</h3>
-                    <p data-key="find-desc">FlareFind is a search engine for beautiful telegram usernames.</p>
+                    <p data-key="find-desc">FlareFind is a search bot that searches for a beautiful username in telegram.</p>
                 </div>
                 <div class="card-links">
                     <a href="https://t.me/FlareFind" target="_blank" class="btn btn-tg">
@@ -87,16 +91,22 @@
         // Словарь локализации (EN / RU)
         const translations = {
             en: {
-                "hero-subtitle": "Many convenient and useful tools.",
+                "nav_settings": "Settings",
+                "hero-subtitle": "FlareSpace - Various stars of space, similar to various FlareSpace projects.",
                 "scroll-text": "Scroll Down",
                 "vpn-desc": "A highly secure, fast, and completely anonymous premium VPN service designed to keep your connection protected and digital footprints clean.",
-                "find-desc": "FlareFind is a search engine for beautiful telegram usernames."
+                "btn-repo": "Repository",
+                "btn-channel": "Telegram Channel (FlareApp)",
+                "find-desc": "FlareFind is a search bot that searches for a beautiful username in telegram."
             },
             ru: {
-                "hero-subtitle": "Множество удобных и полезных инструментов.",
+                "nav_settings": "Настройки",
+                "hero-subtitle": "FlareSpace — различные звезды космоса, подобные различным проектам FlareSpace.",
                 "scroll-text": "Листайте вниз",
                 "vpn-desc": "Высокоскоростной, безопасный и абсолютно анонимный VPN-сервис премиум-класса, созданный для надежной защиты вашего соединения.",
-                "find-desc": "FlareFind — это поисковая система для красивых юзернеймов в Telegram."
+                "btn-repo": "Репозиторий",
+                "btn-channel": "Telegram канал (FlareApp)",
+                "find-desc": "FlareFind — это поисковый бот, который ищет красивое имя пользователя в Telegram."
             }
         };
 
@@ -114,17 +124,17 @@
         }
 
         // Переключение тем оформления (Темная / Светлая)
-        function toggleTheme() {
+        document.getElementById('theme-toggle').addEventListener('click', () => {
             const body = document.body;
-            const icon = document.getElementById('theme-btn').querySelector('i');
+            const icon = document.getElementById('theme-toggle').querySelector('i');
             body.classList.toggle('light-theme');
             
             if(body.classList.contains('light-theme')) {
-                icon.className = 'fa-solid fa-sun';
+                icon.className = 'fas fa-sun';
             } else {
-                icon.className = 'fa-solid fa-moon';
+                icon.className = 'fas fa-moon';
             }
-        }
+        });
 
         // Динамический скролл: исчезновение текста и проявление карточек
         window.addEventListener('scroll', () => {
@@ -135,16 +145,25 @@
             const scrollHint = document.getElementById('scroll-hint');
             const projectsSection = document.getElementById('projects-section');
 
-            // Рассчитываем прозрачность для контента Hero
-            let fadeProgress = 1 - (scrollPos / (vh * 0.45));
+            // Рассчитываем прозрачность и параллакс для контента Hero
+            let fadeProgress = 1 - (scrollPos / (vh * 0.5));
             fadeProgress = Math.max(0, Math.min(1, fadeProgress));
 
+            // Масштабирование и размытие при уходе
+            let scaleProgress = 1 - (scrollPos / (vh * 2));
+            let blurProgress = (scrollPos / (vh * 0.5)) * 10;
+
             heroText.style.opacity = fadeProgress;
-            heroText.style.transform = `translateY(${scrollPos * 0.4}px)`; // Эффект параллакса
+            heroText.style.transform = `translateY(${scrollPos * 0.5}px) scale(${scaleProgress})`;
+            heroText.style.filter = `blur(${blurProgress}px)`;
+
             scrollHint.style.opacity = fadeProgress;
+            scrollHint.style.transform = `translateY(${scrollPos * 0.2}px)`;
 
             // Появление панелей с проектами при достижении порога скролла
-            if (scrollPos > vh * 0.2) {
+            // Используем Intersection Observer для более плавной анимации карточек в CSS,
+            // но здесь оставим переключение класса для секции целиком
+            if (scrollPos > vh * 0.25) {
                 projectsSection.classList.add('visible');
             } else {
                 projectsSection.classList.remove('visible');
